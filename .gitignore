@@ -1,5 +1,7 @@
-#credentials.json
-#token.json
+
+#creds
+credentials.json
+token.json
 
 # Logs
 logs
