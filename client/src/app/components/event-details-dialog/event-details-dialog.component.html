@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Event Details</h1>
+<section mat-dialog-content>
+  <h3>{{calendarEvent.title }}</h3>
+  <p></p>
+</section>
+  <section mat-dialog-actions>  
+    <button mat-icon-button *ngIf="calendarEvent?.meta?.canBeDeleted" color="warn">
+      <mat-icon>delete</mat-icon>
+    </button>
+    <button mat-icon-button color="warn" (click)="onCloseClick()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </section>

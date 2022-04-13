@@ -10,12 +10,15 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { GoogleAuthComponent } from './components/google-auth/google-auth.component';
 import { MonitorInterceptor } from './monitor.interceptor';
+import { MaterialDesignModule } from 'src/material-design/material-design.module';
+import { EventDetailsDialogComponent } from './components/event-details-dialog/event-details-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    GoogleAuthComponent
+    GoogleAuthComponent,
+    EventDetailsDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -25,7 +28,8 @@ import { MonitorInterceptor } from './monitor.interceptor';
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
-    })
+    }),
+    MaterialDesignModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS, useClass:MonitorInterceptor, multi:true

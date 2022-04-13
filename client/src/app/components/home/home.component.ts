@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CalendarView, CalendarEvent } from 'angular-calendar';
-import { CalendarService } from 'src/app/services/calendar.service';
+import { CalendarService } from 'src/app/services/calendar/calendar.service';
+import { colors } from './helpers/colors';
+
+import { MatDialog } from '@angular/material/dialog';
+import { EventDetailsDialogComponent } from '../event-details-dialog/event-details-dialog.component';
+import { compileDeclarePipeFromMetadata } from '@angular/compiler';
+
 
 const now = new Date();
 const dog = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 14, 0,0);
@@ -22,12 +28,26 @@ export class HomeComponent implements OnInit {
       start: dog,
       end: dogEnd,
       title: 'A doggo event',
-      color: {primary: '#ad2121', secondary: "#fff"}
+      color: colors['red'],
+      meta: {
+        canBeDeleted: true,
+      }
+      // actions: [
+      //   {
+      //     label: '<i class="fas fa-fw fa-pencil-alt"></i>',
+      //     onClick: ({ event }: { event: CalendarEvent }): void => {
+      //       console.log('Edit event', event);
+      //     },
+      //   },
+      // ]
     }
   ]
   allowance: number = 10;
   created: number = 0;
-  constructor (private api: CalendarService) { }
+  constructor (
+    public eventDialog:MatDialog,
+    private api: CalendarService,
+    ) { }
 
   ngOnInit () : void {
   } 
@@ -50,8 +70,22 @@ export class HomeComponent implements OnInit {
       ]
       this.created++;
     }
+  }
 
-    // console.log(events)
+  eventClicked({ event }: { event: CalendarEvent }): void {
+    // const data = {
+    //   event: event,
+    //   canDelete: event?.meta?.delete ? true :false 
+    // }
+
+    console.log(event)
+    this.eventDialog.open(EventDetailsDialogComponent,{
+      data: event
+    });
+    // if (event?.meta?.canBeDeleted) {
+    //   console.log('I can be deleted', event)
+    // }
+    // else console.log('Event clicked', event);
   }
 
   clickedDate: Date | undefined = undefined;

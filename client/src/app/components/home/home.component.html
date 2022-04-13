@@ -34,6 +34,7 @@
       [viewDate]="viewDate"
       [events]="events"
       (dayClicked)="dayClicked($event.day.date)"
+      (eventClicked)="eventClicked($event)"
       > 
     </mwl-calendar-month-view>
     
@@ -44,6 +45,7 @@
     [events]="events"
     (dayHeaderClicked)="dayClicked($event.day.date)"
     (hourSegmentClicked)="dayClicked($event.date)"
+    (eventClicked)="eventClicked($event)"
     >
     <!-- (dayHeaderClicked)="clickedDate = $event.day.date"
     (hourSegmentClicked)="clickedDate = $event.date" -->

@@ -7,6 +7,7 @@ html, body {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 .cal-week-view .cal-time-events .cal-day-column {
   margin-right: 10px;
@@ -15,4 +16,7 @@ html, body {
 .cal-week-view .cal-hour {
   width: calc(100% + 10px);
 }
-// @import "../node_modules/angular-calendar/css/angular-calendar.css";
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
