@@ -2,7 +2,8 @@
 
 #env
 .env
-**/environment?.*.ts
+**/environment.ts
+**/environments
 
 # Compiled output
 /dist
