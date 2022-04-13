@@ -1,9 +1,14 @@
+// @import "../../../../node_modules/angular-calendar/css/angular-calendar.css";
+
+
 .calendar{
   padding: 32px;
   background: #424242;
   height: 100%;
   overflow: auto;
 }
+
+
 
 .nav{
   display: flex;
@@ -56,4 +61,17 @@ ul {
   }
 
 
+}
+
+.sign-in {
+  padding: 16px 32px;
+  color: blue;
+  background-color: white;
+  cursor: pointer;
+  border: 0;
+
+  &:hover {
+    color: white;
+    background-color: black;
+  }
 }

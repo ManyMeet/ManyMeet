@@ -1,4 +1,18 @@
+
 <div class="calendar">
+  
+<button *ngIf="!authorized" class="sign-in" (click)="google()">Sign in with Google</button> 
+<button *ngIf="authorized" class="sign-in" (click)="getEvents()">Get Events</button> 
+
+  <div class="alert alert-info">
+    Click on a day or time slot on the view.
+    <strong *ngIf="clickedDate"
+      >You clicked on this time: {{ clickedDate | date:'medium' }}</strong
+    >
+    <strong *ngIf="clickedColumn !== undefined"
+      >You clicked on this column: {{ clickedColumn }}</strong
+    >
+  </div>
   <div class="nav">
     <ul >
       <li><a class="button" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"  ><span class="front">Previous</span></a></li>
@@ -19,17 +33,31 @@
       *ngSwitchCase="CalendarView.Month"  
       [viewDate]="viewDate"
       [events]="events"
-      (dayClicked)="dayClicked($event.day)"
+      (dayClicked)="dayClicked($event.day.date)"
       > 
     </mwl-calendar-month-view>
-  
-
+    
+    
     <mwl-calendar-week-view 
-      *ngSwitchCase="CalendarView.Week" 
-      [viewDate]="viewDate"
-      [events]="events">
+    *ngSwitchCase="CalendarView.Week" 
+    [viewDate]="viewDate"
+    [events]="events"
+    (dayHeaderClicked)="dayClicked($event.day.date)"
+    (hourSegmentClicked)="dayClicked($event.date)"
+    >
+    <!-- (dayHeaderClicked)="clickedDate = $event.day.date"
+    (hourSegmentClicked)="clickedDate = $event.date" -->
     </mwl-calendar-week-view>
-  
+<!-- 
+    <mwl-calendar-week-view
+    *ngSwitchCase="CalendarView.Week"
+    [viewDate]="viewDate"
+    [events]="events"
+    (dayHeaderClicked)="clickedDate = $event.day.date"
+    (hourSegmentClicked)="clickedDate = $event.date"
+  >
+  </mwl-calendar-week-view>
+   -->
 
     <mwl-calendar-day-view 
     *ngSwitchCase="CalendarView.Day" 
