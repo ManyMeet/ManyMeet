@@ -1,0 +1,17 @@
+// :host {
+//   display: relative;
+// }
+
+.container {
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.green {
+  color: rgb(75, 128, 75);
+}

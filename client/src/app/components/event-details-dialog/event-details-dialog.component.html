@@ -1,13 +1,36 @@
-<h1 mat-dialog-title>Event Details</h1>
-<section mat-dialog-content>
-  <h3>{{calendarEvent.title }}</h3>
-  <p></p>
-</section>
-  <section mat-dialog-actions>  
-    <button mat-icon-button *ngIf="calendarEvent?.meta?.canBeDeleted" color="warn">
-      <mat-icon>delete</mat-icon>
-    </button>
-    <button mat-icon-button color="warn" (click)="onCloseClick()">
-      <mat-icon>close</mat-icon>
-    </button>
+<div class="container">
+  <button class="close" mat-icon-button color="warn" (click)="onCloseClick()">
+    <mat-icon>close</mat-icon>
+  </button>
+  <h1 mat-dialog-title>Event Details</h1>
+  <section mat-dialog-content [formGroup]="form">
+  <!-- <section mat-dialog-content> -->
+    <mat-form-field>
+      <input matInput
+             placeholder="Title"
+             value="{{calendarEvent.title}}"
+             formControlName="title"
+      >
+      <input 
+      type="hidden"
+      value="{{calendarEvent.id}}"
+      formControlName="id"
+      >
+    </mat-form-field>
   </section>
+    <section mat-dialog-actions>
+      <button 
+        mat-icon-button 
+        *ngIf="calendarEvent?.meta?.canBeDeleted" 
+        color="warn"
+        (click)="delete()">
+        <mat-icon>delete</mat-icon>
+      </button>
+      <button 
+        mat-icon-button 
+        class="green"
+        (click)="save()">
+        <mat-icon>save</mat-icon>
+      </button>
+    </section>
+</div>
