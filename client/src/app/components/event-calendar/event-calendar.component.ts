@@ -1,53 +1,87 @@
-import { Component, OnInit } from '@angular/core';
-import { CalendarView, CalendarEvent } from 'angular-calendar';
+import {v4 as uuidv4 } from 'uuid';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { CalendarView, CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+
 import { GoogleService } from 'src/app/services/google/google.service';
+import { ApiService } from 'src/app/services/api/api.service';
+import { EventDetailsDialogComponent } from '../event-details-dialog/event-details-dialog.component';
 import { colors } from './helpers/colors';
 
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { EventDetailsDialogComponent } from '../event-details-dialog/event-details-dialog.component';
-import {v4 as uuidv4 } from 'uuid';
-const now = new Date();
-const dog = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 14, 0,0);
-const dogEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 15, 0,0);
-
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  selector: 'app-event-calendar',
+  templateUrl: './event-calendar.component.html',
+  styleUrls: ['./event-calendar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent implements OnInit {
-  
+export class EventCalendarComponent implements OnInit {
+  // get calendar details from server
+
   viewDate: Date = new Date();
+  minDate?: Date; 
+  maxDate?: Date;
+  minHour?: number;
+  maxHour?: number;
   view: CalendarView = CalendarView.Week;
   CalendarView = CalendarView;
   authorized: string | null = localStorage.getItem('authorized');
-  events: CalendarEvent[] = [
-    {
-      start: dog,
-      end: dogEnd,
-      title: 'A doggo event',
-      color: colors['red'],
-      meta: {
-        canBeDeleted: false,
-      },
-      id: 'chiepa'
-    }
-  ]
+  events: CalendarEvent[] = [];
+
+  
   allowance: number = 10;
   created: number = 0;
+
   constructor (
     public eventDialog:MatDialog,
     private googleService: GoogleService,
+    private apiService: ApiService,
+    private route: ActivatedRoute,
     ) { }
 
   ngOnInit () : void {
+    const id = this.route.snapshot.paramMap.get('calendarId');
+    if (id) {
+      this.apiService.getCalendar(id).subscribe(calendar => {
+        if (calendar.minDate) this.viewDate = calendar.minDate;
+        this.maxDate = calendar.maxDate;
+        this.minDate = calendar.minDate;
+        this.maxHour = calendar.maxHour;
+        this.minHour = calendar.minHour;
+        this.events = calendar.events;
+      })
+    }
   } 
+
+  dateIsValid(date: Date): boolean {
+    let validDate: boolean = true;
+    let validHour: boolean = true;
+    if (this.minDate && this.maxDate) {
+      validDate = date >= this.minDate && date <= this.maxDate;
+    }
+    if (this.minHour && this.maxHour) {
+      validHour = date.getHours() >= this.minHour && date.getHours() <= this.maxHour;
+    }
+
+    return validDate && validHour;
+  }
+
+
+  beforeMonthViewRender({ body }: { body: CalendarMonthViewDay[] }): void {
+    body.forEach((day) => {
+      if (!this.dateIsValid(day.date)) {
+        day.cssClass = 'cal-disabled';
+      }
+    });
+  }
+
 
   changeView(view: CalendarView) {
     this.view = view;
   }
 
   dayClicked(date:Date, events?:CalendarEvent[]) :void {
+    if (!this.dateIsValid(date)) return;
     if (this.created < this.allowance) {
       const newEvent: CalendarEvent = {
         start:date,
@@ -86,8 +120,6 @@ export class HomeComponent implements OnInit {
         this.events = [...this.events];
       }
 
-
-
     })
     
   }
@@ -124,7 +156,6 @@ export class HomeComponent implements OnInit {
           }
         ]
       }
-
 
     });
   }

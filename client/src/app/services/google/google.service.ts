@@ -8,7 +8,7 @@ import { NumberValueAccessor } from '@angular/forms';
 @Injectable({
   providedIn: 'root'
 })
-export class CalendarService {
+export class GoogleService {
   private calendarUrl = 'https://www.googleapis.com/calendar/v3'
   private AuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?include_granted_scopes=true&response_type=token&state=34&redirect_uri=${'http://localhost:4200/auth/google/'}&scope=${environment.GOOGLE_SCOPES.join(' ')}&client_id=${environment.googleId}`
   
