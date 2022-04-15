@@ -69,7 +69,11 @@ export class EventCalendarComponent implements OnInit {
 
   beforeMonthViewRender({ body }: { body: CalendarMonthViewDay[] }): void {
     body.forEach((day) => {
-      if (!this.dateIsValid(day.date)) {
+      let validDate: boolean = true;
+      if (this.minDate && this.maxDate) {
+        validDate = day.date >= this.minDate && day.date <= this.maxDate;
+      }
+      if (!validDate) {
         day.cssClass = 'cal-disabled';
       }
     });
@@ -111,9 +115,12 @@ export class EventCalendarComponent implements OnInit {
     
     const dialogRef = this.eventDialog.open(EventDetailsDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(data => {
+      if (!data) return;
+      
       if (data.action === 'delete') {
         this.events = this.events.filter(ev => ev.id !== data.event.id);
       };
+
       if (data.action === 'save') {
         const ev = this.events.find(ev => ev.id === data.event.id);
         if (ev) ev.title = data.event.title;
