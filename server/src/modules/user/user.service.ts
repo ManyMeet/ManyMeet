@@ -43,7 +43,7 @@ export class UserService {
 
   async login (dto:CreateUserDto) : Promise<IUserRO> {
     const {email, password} = dto;
-    const user = await this.userRepository.findOne({email: email.toLowerCase()});
+    const user = await this.userRepository.findOne({email: email.toLowerCase()}, {populate:['calendars']});
     if (!user || !user.checkPassword(password)) {
       throw new HttpException({
         message: 'Input data validation failed',
@@ -77,6 +77,7 @@ export class UserService {
     const userRO = {
       email: user.email,
       id: user.id,
+      calendars: user.calendars.toArray().map(cal => {return {id: cal.uuid, title: cal.title, start: cal.start}})
       // token: this.generateJWT(user)
     }
 
