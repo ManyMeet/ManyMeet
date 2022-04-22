@@ -34,6 +34,7 @@
     "class-validator": "^0.13.2",
     "connect-pg-simple": "^7.0.0",
     "dotenv": "^16.0.0",
+    "express-session": "^1.17.2",
     "ioredis": "^5.0.4",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.3",
