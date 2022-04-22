@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CalendarView, CalendarEvent } from 'angular-calendar';
-import { GoogleService } from 'src/app/services/google/google.service';
+import { GoogleService } from 'src/app/services/google.service';
 import { colors } from './helpers/colors';
 
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';

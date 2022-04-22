@@ -14,6 +14,7 @@ import { GoogleAuthComponent } from './components/google-auth/google-auth.compon
 import { MaterialDesignModule } from 'src/material-design/material-design.module';
 import { EventDetailsDialogComponent } from './components/event-details-dialog/event-details-dialog.component';
 import { EventCalendarComponent } from './components/event-calendar/event-calendar.component';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { EventCalendarComponent } from './components/event-calendar/event-calend
     GoogleAuthComponent,
     EventDetailsDialogComponent,
     EventCalendarComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,

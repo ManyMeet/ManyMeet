@@ -4,8 +4,8 @@ import { CalendarView, CalendarEvent, CalendarMonthViewDay } from 'angular-calen
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 
-import { GoogleService } from 'src/app/services/google/google.service';
-import { ApiService } from 'src/app/services/api/api.service';
+import { GoogleService } from 'src/app/services/google.service';
+import { ApiService } from 'src/app/services/api.service';
 import { EventDetailsDialogComponent } from '../event-details-dialog/event-details-dialog.component';
 import { colors } from './helpers/colors';
 

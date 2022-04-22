@@ -1,0 +1,35 @@
+:host{
+  display: flex;
+  // flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #efefef;
+}
+
+
+mat-card {
+  .inputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  padding: 24px 32px;
+
+  h1{
+    margin-bottom: 44px;
+  }
+
+  mat-form-field {
+    min-width: 300px;
+    width: auto;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+  }
+
+}
