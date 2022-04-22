@@ -1,46 +1,19 @@
 {
-  "name": "calendar",
+  "name": "manymeet",
   "version": "1.0.0",
-  "private": true,
-  "dependencies": {
-    "bcrypt": "^5.0.1",
-    "cookie-parser": "^1.4.6",
-    "dotenv": "^16.0.0",
-    "express": "^4.17.3",
-    "express-session": "^1.17.2",
-    "googleapis": "^39.2.0",
-    "lodash": "^4.17.21",
-    "pg": "^8.7.3",
-    "sequelize": "^6.17.0"
-  },
-  "devDependencies": {
-    "css-loader": "^6.7.1",
-    "dart-sass": "^1.25.0",
-    "mocha": "^9.2.2",
-    "nodemon": "^2.0.15",
-    "pug": "^3.0.2",
-    "sass": "^1.49.9",
-    "sass-loader": "^12.6.0",
-    "style-loader": "^3.3.1",
-    "typescript": "^4.6.3",
-    "webpack": "^5.70.0",
-    "webpack-cli": "^4.9.2"
-  },
+  "private": false,
   "scripts": {
-    "test": "test",
-    "build": "webpack",
-    "dev": "nodemon server/server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Roznoshchik/calendar.git"
+    "url": "git+https://github.com/Roznoshchik/manymeet.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Rostislav Roznoshchik",
   "license": "Unlicensed",
   "bugs": {
-    "url": "https://github.com/Roznoshchik/calendar/issues"
+    "url": "https://github.com/Roznoshchik/manymeet/issues"
   },
-  "homepage": "https://github.com/Roznoshchik/calendar#readme",
+  "homepage": "https://github.com/Roznoshchik/manymeet#readme",
   "description": ""
 }
