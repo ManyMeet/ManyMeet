@@ -11,7 +11,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { GoogleAuthComponent } from './components/google-auth/google-auth.component';
-import { MonitorInterceptor } from './monitor.interceptor';
 import { MaterialDesignModule } from 'src/material-design/material-design.module';
 import { EventDetailsDialogComponent } from './components/event-details-dialog/event-details-dialog.component';
 import { EventCalendarComponent } from './components/event-calendar/event-calendar.component';
@@ -36,9 +35,6 @@ import { EventCalendarComponent } from './components/event-calendar/event-calend
     MaterialDesignModule,
     ReactiveFormsModule,
   ],
-  providers: [{
-    provide: HTTP_INTERCEPTORS, useClass:MonitorInterceptor, multi:true
-  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
