@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { catchError, of, map, Observable } from 'rxjs';
-import { NumberValueAccessor } from '@angular/forms';
 
 
 @Injectable({
@@ -38,13 +37,13 @@ export class GoogleService {
         return of()
       }),
       map(data => {
-          const events : eventResource[] = [];
-          for (let ev of data.items){
-            events.push(this.parseEvent(ev));
-          }
-          return this.sortEvents(events);
-        })
-      )
+        const events : eventResource[] = [];
+        for (let ev of data.items){
+          events.push(this.parseEvent(ev));
+        }
+        return this.sortEvents(events);
+      })
+    )
   }
 
   parseEvent(data: eventResource) : eventResource {

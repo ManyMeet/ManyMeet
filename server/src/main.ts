@@ -6,7 +6,12 @@ import * as session from 'express-session';
 
 
 async function bootstrap() {
-  const appOptions = {cors: { origin:'http://localhost:4200/', credentials:true}}; 
+  const appOptions = {
+    cors: { 
+      origin:'http://localhost:4200', 
+      credentials:true,
+    }
+  }; 
   const app = await NestFactory.create(AppModule, appOptions);
   // const app = await NestFactory.create(AppModule);
 

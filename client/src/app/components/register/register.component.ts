@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 export class RegisterComponent implements OnInit {
   hide = true;
   form: FormGroup;
+  errors: {email:string } = {email: ''}
 
   
   constructor(
@@ -17,10 +18,12 @@ export class RegisterComponent implements OnInit {
     private fb: FormBuilder
     ) { 
       this.form = fb.group({
-        email : new FormControl(''),
-        password : new FormControl(''),
-        password2 : new FormControl('')
+        email : new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/)]),
+        password : new FormControl('', Validators.required),
+        password2 : new FormControl('', Validators.required)
       })
+
+      
 
     }
     
@@ -31,7 +34,12 @@ export class RegisterComponent implements OnInit {
     if (this.form.controls['email'].hasError('required')) {
       return 'You must enter a value';
     }
-    return this.form.controls['email'].hasError('email') ? 'Not a valid email' : '';
+
+    if (this.form.controls['email'].hasError('invalid')) {
+      return this.errors.email
+    }
+
+    return this.form.controls['email'].errors ? 'Not a valid email' : '';
   }
 
   validatePassword() {
@@ -62,10 +70,12 @@ export class RegisterComponent implements OnInit {
 
     if (!p1.value.trim()) {
       p1.setErrors({required:true})
+      return false
     }
 
     if (!p2.value.trim()) {
       p2.setErrors({required:true})
+      return false
     }
 
     return true
@@ -74,9 +84,18 @@ export class RegisterComponent implements OnInit {
 
   handleSubmit() {
     if (!this.validateForm()) this.form.updateValueAndValidity();
-    const email = this.form.controls['email'].value;
-    const password = this.form.controls['password'].value;
-    this.authService.register.subscribe()
+
+    else {
+      const email = this.form.controls['email'].value;
+      const password = this.form.controls['password'].value;
+      this.authService.register(email, password).subscribe(data => {
+        if (!data.ok) {
+          this.errors.email = data.errors['general'];
+          this.form.controls['email'].setErrors({invalid: true})
+          this.form.updateValueAndValidity();
+        }
+      })
+    }
   }
 
 
