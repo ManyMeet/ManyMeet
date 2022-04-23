@@ -1,0 +1,8 @@
+<mat-card *ngIf="data">
+  <div style = "background-image: url('https://gradient-avatar.glitch.me/{{data.title}}?size=64');">
+    {{data.title | slice:0:2}}
+  </div>
+  <h3>{{data.title}}</h3>
+  <p><span>Starts: </span> {{start}}</p>
+  <p><span >Ends: </span> {{end}}</p>
+</mat-card>

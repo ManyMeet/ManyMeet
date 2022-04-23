@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { EventCalendarComponent } from './components/event-calendar/event-calendar.component';
 import { GoogleAuthComponent } from './components/google-auth/google-auth.component';
 import { HomeComponent } from './components/home/home.component';
@@ -11,6 +12,7 @@ const routes: Routes = [
   {path:'auth/google', component: GoogleAuthComponent },
   {path:'auth/register', component:RegisterComponent},
   {path:'auth/login', component:LoginComponent},
+  {path:'dashboard', component:DashboardComponent},
   {path:':calendarId', component:EventCalendarComponent },
 ];
 

@@ -16,6 +16,8 @@ import { EventDetailsDialogComponent } from './components/event-details-dialog/e
 import { EventCalendarComponent } from './components/event-calendar/event-calendar.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { CalendarMiniComponent } from './components/calendar-mini/calendar-mini.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { LoginComponent } from './components/login/login.component';
     EventCalendarComponent,
     RegisterComponent,
     LoginComponent,
+    DashboardComponent,
+    CalendarMiniComponent,
   ],
   imports: [
     BrowserModule,

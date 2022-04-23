@@ -1,0 +1,7 @@
+<!-- <app-calendar-mini [data]="calendars[0]"></app-calendar-mini> -->
+<section>
+  <h1>Your Calendars</h1>
+  <div>
+    <app-calendar-mini *ngFor="let cal of calendars;" [data]="cal"></app-calendar-mini>
+  </div>
+</section>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -14,6 +15,7 @@ export class LoginComponent implements OnInit {
 
   
   constructor(
+    private router: Router,
     private authService: AuthService,
     private fb: FormBuilder
     ) { 
@@ -70,7 +72,8 @@ export class LoginComponent implements OnInit {
         this.form.updateValueAndValidity();
       } else {
         // navigate to
-        console.log(data)
+        this.router.navigate(['dashboard'], {state:data});
+
       }
     })
   
