@@ -77,7 +77,7 @@ export class UserService {
     const userRO = {
       email: user.email,
       id: user.id,
-      calendars: user.calendars.toArray().map(cal => {return {id: cal.uuid, title: cal.title, start: cal.start}})
+      calendars: user.calendars.toArray().map(cal => {return {id: cal.uuid, title: cal.title, start: cal.start, end: cal.end}})
       // token: this.generateJWT(user)
     }
 
