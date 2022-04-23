@@ -15,6 +15,7 @@ import { MaterialDesignModule } from 'src/material-design/material-design.module
 import { EventDetailsDialogComponent } from './components/event-details-dialog/event-details-dialog.component';
 import { EventCalendarComponent } from './components/event-calendar/event-calendar.component';
 import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { RegisterComponent } from './components/register/register.component';
     EventDetailsDialogComponent,
     EventCalendarComponent,
     RegisterComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

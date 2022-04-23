@@ -25,26 +25,26 @@
   h1{
     margin-bottom: 16px;
   }
-
-  p {
-    font-size: 14px;
-    font-weight: 700;
-    color: rgba(0,0,0,.3);
-  }
-  a {
-    border: none;
-    background-color: transparent;
-    font-weight: 700;
-    color: #3f51b5;
-    text-decoration: none;
-    cursor: pointer;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
   margin-bottom: 44px;
+}
+
+p {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(0,0,0,.3);
+}
+a {
+  border: none;
+  background-color: transparent;
+  font-weight: 700;
+  color: #3f51b5;
+  text-decoration: none;
+
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 mat-card {
@@ -74,6 +74,20 @@ mat-card {
   }
 
 }
+
+form {
+  a {
+    align-self: flex-start;
+    color: rgba(0,0,0,.3);
+    
+    &:hover {
+      color: #3f51b5;
+    }
+
+  }
+
+}
+
 
 @keyframes AnimateBG { 
   0%{background-position:0% 50%}

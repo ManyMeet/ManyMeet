@@ -8,11 +8,9 @@ import { UserRO } from '../interfaces/user.interface';
   providedIn: 'root'
 })
 export class AuthService {
-  BASE_URL = 'http://localhost:3000/api/'
+  BASE_URL = 'http://localhost:3000/api'
   
   constructor( private http: HttpClient) { }
-
-
 
   register (email:string, password:string) : Observable<any> {
     const body = JSON.stringify({email, password});
@@ -22,7 +20,7 @@ export class AuthService {
     })
 
     return this.http
-      .post<any>(this.BASE_URL + 'users/register', body, {headers:httpOptions})
+      .post<any>(this.BASE_URL + '/users/register', body, {headers:httpOptions})
       .pipe(
         catchError(res => {
           console.error(res)
@@ -39,5 +37,33 @@ export class AuthService {
         })
       )
   }
+
+  login (email:string, password:string) : Observable<any> {
+    const body = JSON.stringify({email, password});
+    const httpOptions = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Credentials': 'include'
+    })
+
+    return this.http.post<any>(this.BASE_URL + '/users/login', body, {headers: httpOptions})
+    .pipe(
+      catchError( res => {
+        console.error(res);
+        const data: ErrorResponse = {
+          ok:false, 
+          errors: res.error.errors,
+          message: res.error.message
+        }
+        return of(data)
+      }),
+      map((data: UserRO)=> {
+        if (data.ok === undefined) data.ok = true;
+        return data;
+      })
+    )
+
+  }
+
+
 
 }
