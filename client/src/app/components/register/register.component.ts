@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -15,7 +16,8 @@ export class RegisterComponent implements OnInit {
   
   constructor(
     private authService: AuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router : Router
     ) { 
       this.form = fb.group({
         email : new FormControl('', [Validators.required, Validators.pattern(/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/)]),
@@ -93,6 +95,8 @@ export class RegisterComponent implements OnInit {
           this.errors.email = data.errors['general'];
           this.form.controls['email'].setErrors({invalid: true})
           this.form.updateValueAndValidity();
+        } else {
+          this.router.navigate(['dashboard'], {state:data});
         }
       })
     }

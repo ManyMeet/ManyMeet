@@ -27,7 +27,6 @@ export class DashboardComponent implements OnInit {
       }
       if (!this.calendars.length) {
         const calendars = localStorage.getItem('calendars');
-        console.log('localStorage', calendars)
         if (calendars) {
           this.calendars = JSON.parse(calendars);
         }
@@ -35,9 +34,7 @@ export class DashboardComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    console.log('>>>>>>>>>>>>')
-    console.log(this.calendars)
-    console.log('>>>>>>>>>>>>')
+
   }
 
   sort(calendars: calendarPreview[]) {

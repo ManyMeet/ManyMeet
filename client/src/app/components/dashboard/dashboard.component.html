@@ -3,5 +3,11 @@
   <h1>Your Calendars</h1>
   <div>
     <app-calendar-mini *ngFor="let cal of calendars;" [data]="cal"></app-calendar-mini>
+    <mat-card>
+      <mat-icon>add_circle</mat-icon>     
+      <h3>Add a calendar</h3>
+  
+    </mat-card> 
+    
   </div>
 </section>
