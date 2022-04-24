@@ -9,6 +9,8 @@ import { calendarPreview } from 'src/app/interfaces/calendar.interface';
 export class CalendarMiniComponent implements OnInit {
   @Input() 
   data?: calendarPreview;
+  @Input()
+  past?: calendarPreview;
   start?: string;
   end?: string;
 
@@ -16,10 +18,14 @@ export class CalendarMiniComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.data?.start && this.data.end) {
-      // this.parseDate(this.data.end)
       this.start = this.parseDate(this.data.start);
       this.end = this.parseDate(this.data.end);
     }
+    if (this.past?.start && this.past.end) {
+      this.start = this.parseDate(this.past.start);
+      this.end = this.parseDate(this.past.end);
+    }
+
   }
 
   parseDate(isoDate: string) {

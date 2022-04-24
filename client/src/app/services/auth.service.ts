@@ -14,13 +14,13 @@ export class AuthService {
 
   register (email:string, password:string) : Observable<any> {
     const body = JSON.stringify({email, password});
-    const httpOptions = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Credentials': 'include'
-    })
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json'}),
+      withCredentials: true
+    }
 
     return this.http
-      .post<any>(this.BASE_URL + '/users/register', body, {headers:httpOptions})
+      .post<any>(this.BASE_URL + '/users/register', body, httpOptions)
       .pipe(
         catchError(res => {
           console.error(res)
@@ -31,7 +31,7 @@ export class AuthService {
           }
           return of(data)
         }),
-        map((data: UserRO) => {
+        map((data) => {
           if (data.ok === undefined) data.ok = true;
           return data;
         })
@@ -40,12 +40,12 @@ export class AuthService {
 
   login (email:string, password:string) : Observable<any> {
     const body = JSON.stringify({email, password});
-    const httpOptions = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Credentials': 'include'
-    })
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json'}),
+      withCredentials: true
+    }
 
-    return this.http.post<any>(this.BASE_URL + '/users/login', body, {headers: httpOptions})
+    return this.http.post<any>(this.BASE_URL + '/users/login', body, httpOptions)
     .pipe(
       catchError( res => {
         console.error(res);
@@ -56,7 +56,7 @@ export class AuthService {
         }
         return of(data)
       }),
-      map((data: UserRO)=> {
+      map((data)=> {
         if (data.ok === undefined) data.ok = true;
         return data;
       })
@@ -64,6 +64,11 @@ export class AuthService {
 
   }
 
+  logout () {
+    // implement logout routes on server side later. 
+    console.log('logging out');
+
+  }
 
 
 }

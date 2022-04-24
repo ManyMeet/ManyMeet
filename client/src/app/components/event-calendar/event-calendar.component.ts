@@ -1,9 +1,9 @@
 import {v4 as uuidv4 } from 'uuid';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CalendarView, CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-
+import { Subject } from 'rxjs';
 import { GoogleService } from 'src/app/services/google.service';
 import { ApiService } from 'src/app/services/api.service';
 import { EventDetailsDialogComponent } from '../event-details-dialog/event-details-dialog.component';
@@ -13,7 +13,7 @@ import { colors } from './helpers/colors';
   selector: 'app-event-calendar',
   templateUrl: './event-calendar.component.html',
   styleUrls: ['./event-calendar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EventCalendarComponent implements OnInit {
   // get calendar details from server
@@ -28,29 +28,41 @@ export class EventCalendarComponent implements OnInit {
   authorized: string | null = localStorage.getItem('authorized');
   events: CalendarEvent[] = [];
 
-  
   allowance: number = 10;
   created: number = 0;
+
+  // refresh = new Subject<void>();
 
   constructor (
     public eventDialog:MatDialog,
     private googleService: GoogleService,
     private apiService: ApiService,
     private route: ActivatedRoute,
-    ) { }
+    ) {
+      const id = this.route.snapshot.paramMap.get('calendarId');
+      if (id) {
+        this.apiService.getCalendar(id).subscribe(calendar => {
+          console.log('CAL>>>>>', calendar)
+        
+          this.viewDate = new Date(Date.parse(calendar.start));
+          this.minDate = this.viewDate;
+          this.maxDate = new Date(Date.parse(calendar.end));
+          this.minHour = 9;
+          this.maxHour = 21;
+          this.events = calendar.events.map(ev => {
+            return {
+              ...ev, 
+              start: new Date(Date.parse(ev.start)),
+              end: new Date(Date.parse(ev.end)),
+            }
+          });
+          // this.refresh.next();
+        })
+       }
+     }
 
   ngOnInit () : void {
-    const id = this.route.snapshot.paramMap.get('calendarId');
-    if (id) {
-      this.apiService.getCalendar(id).subscribe(calendar => {
-        if (calendar.minDate) this.viewDate = calendar.minDate;
-        this.maxDate = calendar.maxDate;
-        this.minDate = calendar.minDate;
-        this.maxHour = calendar.maxHour;
-        this.minHour = calendar.minHour;
-        this.events = calendar.events;
-      })
-    }
+    
   } 
 
   dateIsValid(date: Date): boolean {
@@ -144,8 +156,8 @@ export class EventCalendarComponent implements OnInit {
     const lastDate = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString()
 
     const searchParams : {[key:string]: string} = {
-      timeMin:startDate,
-      timeMax:lastDate,
+      timeMin:this.minDate?.toISOString() || startDate,
+      timeMax:this.maxDate?.toISOString() || lastDate,
       orderBy: 'startTime',
       singleEvents:'True'
     }

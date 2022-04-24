@@ -47,7 +47,6 @@ export class CalendarService {
         errors: {general: 'Calendar exists'},
       }, HttpStatus.BAD_REQUEST);
     }
-    
     const calendar = new CalendarEntity(id, title, start, end);
     user.calendars.add(calendar)
     await this.calendarRepository.persistAndFlush(calendar)
@@ -62,7 +61,6 @@ export class CalendarService {
         errors: {general: 'Calendar not found'},
       }, HttpStatus.NOT_FOUND);
     }
-
     return this.buildCalendarRo(exists);
   }
 
@@ -349,8 +347,7 @@ export class CalendarService {
     })
   }
 
-  private buildCalendarRo(calendar: CalendarEntity) {
-
+  private async buildCalendarRo(calendar: CalendarEntity) {
     const eventsMap = calendar.events.toArray().map(ev => {
       return {
         title:ev.title,
@@ -364,14 +361,13 @@ export class CalendarService {
     })
 
     const participantsMap = calendar.participants.toArray().map(p => {
-      
       return {
         id: p.id.toString(),
         name: p.name, 
         email: p.email,
         type: p.type,
         calendar: p.calendar?.uuid ? p.calendar.uuid.toString() : p.calendar.toString(),
-        events: p.events? p.events.map(e => e.id) : []
+        // events: p.events? p.events.map(e => e.id) : []
       }
     })
 

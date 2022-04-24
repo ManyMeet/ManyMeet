@@ -1,0 +1,49 @@
+<div class="container">
+  <button (click)="close()" mat-icon-button><mat-icon aria-hidden="false" aria-label="close">close</mat-icon></button>
+  <h2 mat-dialog-title>Create an Event Calendar</h2>
+  <mat-dialog-content>
+    <mat-stepper orientation="vertical" [linear]="true" #stepper>
+      <mat-step [stepControl]="title">
+        <form [formGroup]="title">
+          <ng-template matStepLabel>Title your event</ng-template>
+          <mat-form-field appearance="fill">
+            <mat-label>Title</mat-label>
+            <input matInput placeholder="title" id="title" formControlName="title" required>
+          </mat-form-field>
+          <div  >
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="start">
+        <form [formGroup]="start">
+          <ng-template matStepLabel>Choose a start date</ng-template> 
+          <mat-form-field appearance="fill">
+            <mat-label>Start</mat-label>
+            <input matInput type="datetime-local"  min="{{min}}" formControlName="startDate" required>
+            <mat-hint>MM-DD-YYY</mat-hint>
+          </mat-form-field>
+          <div >
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="end">
+        <form [formGroup]="end">
+          <ng-template matStepLabel>Choose an end date</ng-template> 
+          <mat-form-field appearance="fill">
+            <mat-label>End</mat-label>
+            <input matInput type="datetime-local"  min="{{min}}" formControlName="endDate" required>
+            <mat-hint>MM-DD-YYY</mat-hint>
+          </mat-form-field>
+          <div class="actions"> 
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-raised-button color="primary" (click)="save()">Create Calendar</button>
+          </div>
+        </form>
+      </mat-step>
+      
+    </mat-stepper>
+  </mat-dialog-content>
+</div>

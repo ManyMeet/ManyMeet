@@ -92,7 +92,7 @@ export class RegisterComponent implements OnInit {
       const password = this.form.controls['password'].value;
       this.authService.register(email, password).subscribe(data => {
         if (!data.ok) {
-          this.errors.email = data.errors['general'];
+          this.errors.email = data?.errors['general'];
           this.form.controls['email'].setErrors({invalid: true})
           this.form.updateValueAndValidity();
         } else {

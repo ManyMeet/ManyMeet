@@ -1,13 +1,18 @@
 <!-- <app-calendar-mini [data]="calendars[0]"></app-calendar-mini> -->
 <section>
-  <h1>Your Calendars</h1>
+  <h2>Upcoming Event Calendars</h2>
   <div>
-    <app-calendar-mini *ngFor="let cal of calendars;" [data]="cal"></app-calendar-mini>
-    <mat-card>
+    <app-calendar-mini *ngFor="let cal of calendars;" (click)="openCal(cal)" [data]="cal" ></app-calendar-mini>
+    <mat-card (click)="openDialog()">
       <mat-icon>add_circle</mat-icon>     
       <h3>Add a calendar</h3>
-  
     </mat-card> 
-    
+  </div>
+</section>
+
+<section *ngIf="pastCalendars.length">
+  <h2>Past Event Calendars</h2>
+  <div>
+    <app-calendar-mini *ngFor="let cal of pastCalendars;" (click)="openCal(cal)" [past]="cal" ></app-calendar-mini>
   </div>
 </section>

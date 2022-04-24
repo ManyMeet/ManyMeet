@@ -6,3 +6,8 @@ export interface UserRO {
   calendars: calendar[]
   ok:boolean; 
 }
+
+export interface UserPreviewRO {
+  id: number,
+  email: string;
+}

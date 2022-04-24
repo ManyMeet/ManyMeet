@@ -11,7 +11,7 @@ const config: Options =  {
   clientUrl: process.env.DATABASE_URL,
   type: 'postgresql',
   highlighter: new SqlHighlighter(),
-  debug: true,
+  debug: false,
   loadStrategy: LoadStrategy.JOINED,
   metadataProvider: TsMorphMetadataProvider,
   migrations: {

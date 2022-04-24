@@ -11,7 +11,6 @@ export class AuthMiddleware implements NestMiddleware {
     }
     
     const user = await this.userService.findOne({id : req.session.userId})
-  
     if (!user) return next()
     req.user = user;
     next();

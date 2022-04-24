@@ -1,0 +1,25 @@
+.container {
+  position: relative;
+  width: 50vw;
+  min-width: 300px;
+  padding: 48px;
+}
+
+.mat-icon-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.mat-form-field {
+  margin-top: 16px;
+  width: 100%;
+}
+
+.mat-stepper-vertical {
+  margin-top: 8px;
+}
+
+.actions {
+  margin-top: 16px;
+}

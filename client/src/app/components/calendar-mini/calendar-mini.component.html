@@ -6,3 +6,12 @@
   <p><span>Starts: </span> {{start}}</p>
   <p><span >Ends: </span> {{end}}</p>
 </mat-card>
+
+<mat-card ngClass="pastCal" *ngIf="past">
+  <div>
+    {{past.title | slice:0:2}}
+  </div>
+  <h3>{{past.title}}</h3>
+  <p><span>From: </span> {{start}}</p>
+  <p><span >To: </span> {{end}}</p>
+</mat-card>

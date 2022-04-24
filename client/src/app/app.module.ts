@@ -18,6 +18,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CalendarMiniComponent } from './components/calendar-mini/calendar-mini.component';
+import { CreateCalendarDialogComponent } from './components/create-calendar-dialog/create-calendar-dialog.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { CalendarMiniComponent } from './components/calendar-mini/calendar-mini.
     LoginComponent,
     DashboardComponent,
     CalendarMiniComponent,
+    CreateCalendarDialogComponent,
   ],
   imports: [
     BrowserModule,
