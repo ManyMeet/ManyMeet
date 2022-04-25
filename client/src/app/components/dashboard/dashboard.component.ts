@@ -101,8 +101,8 @@ export class DashboardComponent implements OnInit {
     const futureCalendars: calendarPreview[] = [];
 
     calendars.forEach(cal =>  {
-      if (cal.start) {
-        if (new Date(Date.parse(cal.start))  > today) {
+      if (cal.end) {
+        if (new Date(Date.parse(cal.end))  > today) {
           futureCalendars.push(cal)
         } else {
           pastCalendars.push(cal);

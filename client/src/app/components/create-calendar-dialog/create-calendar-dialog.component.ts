@@ -13,7 +13,6 @@ export class CreateCalendarDialogComponent implements OnInit {
   title: FormGroup;
   start: FormGroup;
   end: FormGroup
-  // min: string; 
   minDate:Date = new Date();
 
 
@@ -21,7 +20,6 @@ export class CreateCalendarDialogComponent implements OnInit {
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<CreateCalendarDialogComponent>,
   ) {
-    // this.min = this.getCurrentTime()
     this.title = this.fb.group({
       title: ['', Validators.required], 
     });
@@ -41,18 +39,14 @@ export class CreateCalendarDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getCurrentTime() {
-    const now = new Date();
-    const offset = new Date(now).getTimezoneOffset() / 60;
-    now.setHours(now.getHours() - offset)
-    return now.toISOString().substring(0,16);
-  }
-
   save() {
     const title = this.title.controls['title'].value
-    const start = new Date(this.start.controls['startDate'].value).toISOString()
-    const end = new Date(this.end.controls['endDate'].value).toISOString()
-    
+    const startDate = new Date(this.start.controls['startDate'].value);
+    startDate.setHours(0,0,0,0);
+    const start = startDate.toISOString()
+    const endDate = new Date(this.end.controls['endDate'].value)
+    endDate.setHours(23,59,59,59);
+    const end = endDate.toISOString();
     const newCal : createCalendarDTO = {title, start, end}
     
     this.dialogRef.close(newCal)

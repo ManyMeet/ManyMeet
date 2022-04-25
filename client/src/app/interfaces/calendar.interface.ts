@@ -28,3 +28,12 @@ export interface createCalendarDTO {
   start:string;
   end: string;
 }
+
+export interface updateCalendarDTO {
+  id: string;
+  title?: string;
+  start?: string;
+  end?: string;
+  minHour?: string;
+  maxHour?: string;
+}
