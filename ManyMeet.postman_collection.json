@@ -1,0 +1,493 @@
+{
+	"info": {
+		"_postman_id": "f270d4e5-dcf8-436d-8291-5af9cc0a27aa",
+		"name": "ManyMeet",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\" : \"Alan@testing.com\", \n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"alan@test.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/users/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Calendar",
+			"item": [
+				{
+					"name": "events",
+					"item": [
+						{
+							"name": "get events",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/calendar/db923f7d-af6a-4097-8e14-e7aebd7ee595/events",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"calendar",
+										"db923f7d-af6a-4097-8e14-e7aebd7ee595",
+										"events"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get event",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/calendar/db923f7d-af6a-4097-8e14-e7aebd7ee595/events/50fe01e0-73c6-4b27-af79-81259ccfa596",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"calendar",
+										"db923f7d-af6a-4097-8e14-e7aebd7ee595",
+										"events",
+										"50fe01e0-73c6-4b27-af79-81259ccfa596"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/calendar/db923f7d-af6a-4097-8e14-e7aebd7ee595/events/50fe01e0-73c6-4b27-af79-81259ccfa596",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"calendar",
+										"db923f7d-af6a-4097-8e14-e7aebd7ee595",
+										"events",
+										"50fe01e0-73c6-4b27-af79-81259ccfa596"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update event",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"50fe01e0-73c6-4b27-af79-81259ccfa596\",\n    \"title\": \"RR updated this event again!!!!\",\n    \"start\": \"2022-04-21T10:39:47.000Z\",\n    \"end\": \"2022-04-21T12:39:47.000Z\",\n    \"providerId\": null,\n    \"clientId\": null,\n    \"calendar\": \"db923f7d-af6a-4097-8e14-e7aebd7ee595\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/calendar/db923f7d-af6a-4097-8e14-e7aebd7ee595/events/50fe01e0-73c6-4b27-af79-81259ccfa596",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"calendar",
+										"db923f7d-af6a-4097-8e14-e7aebd7ee595",
+										"events",
+										"50fe01e0-73c6-4b27-af79-81259ccfa596"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update event with participant",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"50fe01e0-73c6-4b27-af79-81259ccfa596\",\n    \"title\": \"RR updated this event!!!!\",\n    \"start\": \"2022-04-21T10:39:47.000Z\",\n    \"end\": \"2022-04-21T12:39:47.000Z\",\n    \"providerId\": \"4d0e9972-0440-414b-ad29-a6c870c038c0\",\n    \"clientId\": null,\n    \"calendar\": \"db923f7d-af6a-4097-8e14-e7aebd7ee595\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/calendar/db923f7d-af6a-4097-8e14-e7aebd7ee595/events/50fe01e0-73c6-4b27-af79-81259ccfa596",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"calendar",
+										"db923f7d-af6a-4097-8e14-e7aebd7ee595",
+										"events",
+										"50fe01e0-73c6-4b27-af79-81259ccfa596"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "participants",
+					"item": [
+						{
+							"name": "get participants",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "get participant",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/calendar/db923f7d-af6a-4097-8e14-e7aebd7ee595/participants/9e64f95c-cbf8-405c-a2c0-d56d12c70a53",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"calendar",
+										"db923f7d-af6a-4097-8e14-e7aebd7ee595",
+										"participants",
+										"9e64f95c-cbf8-405c-a2c0-d56d12c70a53"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete participant",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/calendar/db923f7d-af6a-4097-8e14-e7aebd7ee595/participants/9e64f95c-cbf8-405c-a2c0-d56d12c70a53",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"calendar",
+										"db923f7d-af6a-4097-8e14-e7aebd7ee595",
+										"participants",
+										"9e64f95c-cbf8-405c-a2c0-d56d12c70a53"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update participant",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\" : \"updatedemail@email.com\",\n    \"name\": \"Uber Mentoring\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/calendar/db923f7d-af6a-4097-8e14-e7aebd7ee595/participants/ddead8ae-7242-4f60-8db2-ee01faf99850",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"calendar",
+										"db923f7d-af6a-4097-8e14-e7aebd7ee595",
+										"participants",
+										"ddead8ae-7242-4f60-8db2-ee01faf99850"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "cal",
+					"item": [
+						{
+							"name": "update calendar",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\":\"I have a new date and a new title\",\n    \"start\": \"2022-04-29T10:39:54.838Z\",\n    \"end\":\"2022-05-03T10:39:54.838Z\" \n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/calendar/db923f7d-af6a-4097-8e14-e7aebd7ee595",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"calendar",
+										"db923f7d-af6a-4097-8e14-e7aebd7ee595"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create Calendar",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"I am a cool Event\",\n    \"start\": \"2022-04-21T08:37:47.677Z\",\n    \"end\": \"2022-04-28T08:37:47.677Z\",\n    \"id\":\"c7ddbbd5-01f5-4d80-9648-fd62e27fd389\"\n\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/calendar",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"calendar"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Calendar",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"I am a cool Event\",\n    \"start\": \"2022-04-21T08:37:47.677Z\",\n    \"end\": \"2022-04-28T08:37:47.677Z\",\n    \"id\":\"c7ddbbd5-01f5-4d80-9648-fd62e27fd389\"\n\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/calendar/db923f7d-af6a-4097-8e14-e7aebd7ee595",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"calendar",
+										"db923f7d-af6a-4097-8e14-e7aebd7ee595"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete calendar",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"I am a cool Event\",\n    \"start\": \"2022-04-21T08:37:47.677Z\",\n    \"end\": \"2022-04-28T08:37:47.677Z\",\n    \"id\":\"c7ddbbd5-01f5-4d80-9648-fd62e27fd389\"\n\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/calendar/db923f7d-af6a-4097-8e14-e7aebd7ee595",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"calendar",
+										"db923f7d-af6a-4097-8e14-e7aebd7ee595"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update calendar with participants",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"events\": [\n        {\n            \"id\": \"b6b76a10-a10b-4d44-854c-93ed58476de1\",\n            \"title\": \"I'm an updated event!!!!\", \n            \"start\": \"2022-04-21T10:39:47.104Z\",\n            \"end\": \"2022-04-21T12:39:47.104Z\"\n        }, \n        {\n            \"id\": \"c1df4cbb-9d2d-47aa-8b36-f273786feaaf\",\n            \"title\": \"I'm a new event!!!!\", \n            \"start\": \"2022-04-21T10:39:47.104Z\",\n            \"end\": \"2022-04-21T12:39:47.104Z\"\n        }, \n    ]\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/calendar/db923f7d-af6a-4097-8e14-e7aebd7ee595",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"calendar",
+										"db923f7d-af6a-4097-8e14-e7aebd7ee595"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update calendar with events",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"events\": [\n        {\n            \"id\": \"b6b76a10-a10b-4d44-854c-93ed58476de1\",\n            \"title\": \"I'm a very updated event!!!!\", \n            \"start\": \"2022-04-21T10:39:47.104Z\",\n            \"end\": \"2022-04-21T12:39:47.104Z\"\n        }, \n        {\n            \"id\": \"c1df4cbb-9d2d-47aa-8b36-f273786feaaf\",\n            \"title\": \"I'm a new event!!!!\", \n            \"start\": \"2022-04-21T10:39:47.104Z\",\n            \"end\": \"2022-04-21T12:39:47.104Z\"\n        },{\n            \"id\": \"50fe01e0-73c6-4b27-af79-81259ccfa596\",\n            \"title\": \"I'm a third event!!!!\", \n            \"start\": \"2022-04-21T10:39:47.104Z\",\n            \"end\": \"2022-04-21T12:39:47.104Z\"\n        }, \n        {\n            \"id\": \"d63891d0-67f2-4cab-beb9-939fec9b2ba0\",\n            \"title\": \"I'm a fourth event!!!!\", \n            \"start\": \"2022-04-21T10:39:47.104Z\",\n            \"end\": \"2022-04-21T12:39:47.104Z\"\n        },    \n        {\n            \"id\": \"7e59e05e-ea93-4299-afd0-026608efde10\",\n            \"title\": \"I'm a fifth event!!!!\", \n            \"start\": \"2022-04-21T10:39:47.104Z\",\n            \"end\": \"2022-04-21T12:39:47.104Z\"\n        },\n          {\n            \"id\": \"f1700b6f-cb08-429a-8d5f-fb2bb531ded9\",\n            \"title\": \"I'm a 6th event!!!!\", \n            \"start\": \"2022-04-21T10:39:47.104Z\",\n            \"end\": \"2022-04-21T12:39:47.104Z\"\n        }\n    \n    ]\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/calendar/db923f7d-af6a-4097-8e14-e7aebd7ee595",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"calendar",
+										"db923f7d-af6a-4097-8e14-e7aebd7ee595"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
