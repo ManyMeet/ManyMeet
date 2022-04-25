@@ -134,6 +134,24 @@
           "primary": false,
           "nullable": true,
           "mappedType": "integer"
+        },
+        "default_location": {
+          "name": "default_location",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "default_description": {
+          "name": "default_description",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
         }
       },
       "name": "calendar",

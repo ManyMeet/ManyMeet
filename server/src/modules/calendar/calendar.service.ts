@@ -78,6 +78,7 @@ export class CalendarService {
   }
 
   async update(id: string, dto: UpdateCalendarDto) {
+    console.log('>>>>>>', dto)
     const cal = await this.calendarRepository.findOne({ uuid: id }, { populate: ['events', 'users', 'participants'] });
     if (!cal) {
       throw new HttpException({
@@ -116,6 +117,14 @@ export class CalendarService {
 
     if (dto.defaultTitle) {
       cal.defaultTitle = dto.defaultTitle;
+    }
+
+    if (dto.defaultDescription) {
+      cal.defaultDescription = dto.defaultDescription;
+    }
+
+    if(dto.defaultLocation) {
+      cal.defaultLocation = dto.defaultLocation;
     }
 
     if (dto.events !== undefined && dto.events.length > 0) {
@@ -401,8 +410,10 @@ export class CalendarService {
       end: calendar.end.toISOString(),
       minHour: calendar.minHour || null,
       maxHour: calendar.maxHour || null,
-      defaultTitle: calendar.defaultTitle || 'open slot',
-      defaultDuration: calendar.defaultDuration || 30,
+      defaultTitle: calendar.defaultTitle,
+      defaultDuration: calendar.defaultDuration,
+      defaultLocation: calendar.defaultLocation,
+      defaultDescription: calendar.defaultDescription,
       events: eventsMap,
       participants: participantsMap,
       users: usersMap

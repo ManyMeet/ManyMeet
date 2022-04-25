@@ -18,6 +18,10 @@ export class UpdateCalendarDto {
 
   readonly defaultTitle?: string;
 
+  readonly defaultDescription?: string;
+
+  readonly defaultLocation?: string;
+
   readonly events?: Event[];
 
   readonly participants?: Participant[];
