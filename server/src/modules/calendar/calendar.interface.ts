@@ -8,6 +8,9 @@ export interface ICalendarData {
   start: string;
   end: string;
 
+  minHour: string;
+  maxHour: string;
+  
   participants:ParticipantInterface[],
   events: EventInterface[]
 

@@ -10,6 +10,10 @@ export class UpdateCalendarDto {
   
   readonly end?: string;
 
+  readonly minHour?: string;
+
+  readonly maxHour?: string;
+
   readonly events?: Event[];
 
   readonly participants?: Participant[];

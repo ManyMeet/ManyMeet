@@ -22,6 +22,12 @@ export class Calendar {
   @Property()
   end: Date;
 
+  @Property()
+  minHour: string;
+
+  @Property()
+  maxHour: string;
+
   @ManyToMany(()=> User, user => user.calendars)
   users = new Collection<User>(this);
 

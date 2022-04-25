@@ -98,6 +98,24 @@
           "nullable": false,
           "length": 6,
           "mappedType": "datetime"
+        },
+        "min_hour": {
+          "name": "min_hour",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "max_hour": {
+          "name": "max_hour",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
         }
       },
       "name": "calendar",

@@ -101,6 +101,14 @@ export class CalendarService {
       cal.end = new Date(dto.end)
     }
 
+    if (dto.minHour) {
+      cal.minHour = dto.minHour;
+    }
+
+    if (dto.maxHour) {
+      cal.maxHour = dto.maxHour;
+    }
+
     if (dto.events && dto.events.length > 0) {
       await Promise.all( 
         dto.events.map(async ev => {
