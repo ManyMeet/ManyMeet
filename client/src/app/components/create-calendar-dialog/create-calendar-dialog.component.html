@@ -20,7 +20,10 @@
           <ng-template matStepLabel>Choose a start date</ng-template> 
           <mat-form-field appearance="fill">
             <mat-label>Start</mat-label>
-            <input matInput type="datetime-local"  min="{{min}}" formControlName="startDate" required>
+            <!-- <input matInput type="datetime-local"  min="{{min}}" formControlName="startDate" required> -->
+            <input [min]="minDate" formControlName="startDate" matInput [matDatepicker]="startPicker">
+            <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+            <mat-datepicker #startPicker></mat-datepicker>
             <mat-hint>MM-DD-YYY</mat-hint>
           </mat-form-field>
           <div >
@@ -34,7 +37,9 @@
           <ng-template matStepLabel>Choose an end date</ng-template> 
           <mat-form-field appearance="fill">
             <mat-label>End</mat-label>
-            <input matInput type="datetime-local"  min="{{min}}" formControlName="endDate" required>
+            <input [min]="minDate" formControlName="endDate" matInput [matDatepicker]="endPicker">
+            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+            <mat-datepicker #endPicker></mat-datepicker>
             <mat-hint>MM-DD-YYY</mat-hint>
           </mat-form-field>
           <div class="actions"> 

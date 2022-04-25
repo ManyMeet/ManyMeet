@@ -13,6 +13,8 @@ export interface calendarRO {
   id: string;
   title: string;
   start: string;
+  minHour: string;
+  maxHour:string;
   end: string;
   events: EventRO[];
   participants: participantRO[],

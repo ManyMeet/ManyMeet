@@ -9,13 +9,14 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatMenuModule } from '@angular/material/menu'
+import { MatMenuModule } from '@angular/material/menu';
+import { MatDatepickerModule} from '@angular/material/datepicker'
 
 const modules: any = [
   MatButtonModule, MatIconModule, MatDialogModule,
   MatFormFieldModule, MatInputModule, MatCardModule,
   MatStepperModule, MatNativeDateModule, MatSidenavModule,
-  MatToolbarModule, MatMenuModule]
+  MatToolbarModule, MatMenuModule, MatDatepickerModule]
 
 
 
