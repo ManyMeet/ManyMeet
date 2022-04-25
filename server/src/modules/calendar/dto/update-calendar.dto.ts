@@ -14,6 +14,10 @@ export class UpdateCalendarDto {
 
   readonly maxHour?: string;
 
+  readonly defaultDuration?: number;
+
+  readonly defaultTitle?: string;
+
   readonly events?: Event[];
 
   readonly participants?: Participant[];
@@ -24,5 +28,6 @@ interface Event {
   id: string,
   title: string,
   start: string,
-  end: string
+  end: string,
+  meta: string,
 }

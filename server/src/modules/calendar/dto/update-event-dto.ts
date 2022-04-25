@@ -6,4 +6,6 @@ export class UpdateEventDto {
   readonly end?: string;
   readonly clientId?: string;
   readonly providerId?: string;
+  readonly meta?: string;
 }
+

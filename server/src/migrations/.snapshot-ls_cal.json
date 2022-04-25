@@ -116,6 +116,24 @@
           "primary": false,
           "nullable": false,
           "mappedType": "string"
+        },
+        "default_title": {
+          "name": "default_title",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
+        },
+        "default_duration": {
+          "name": "default_duration",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
         }
       },
       "name": "calendar",
@@ -328,6 +346,15 @@
           "nullable": false,
           "length": 6,
           "mappedType": "datetime"
+        },
+        "meta": {
+          "name": "meta",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "string"
         },
         "calendar_uuid": {
           "name": "calendar_uuid",

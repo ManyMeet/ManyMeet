@@ -20,6 +20,9 @@ export class Event {
   @Property()
   end: Date;
 
+  @Property({nullable:true})
+  meta: string;
+
   @ManyToOne(()=> Calendar, 'events')
   calendar: Calendar;
 
@@ -29,11 +32,12 @@ export class Event {
   @ManyToOne(() => Participant, 'events')
   client?: Participant
 
-  constructor (id:string, title: string, start: string, end: string) {
+  constructor (id:string, title: string, start: string, end: string, meta?: string) {
     this.id = id,
     this.start = new Date(start),
     this.end = new Date(end);
     this.title = title;
+    this.meta = meta || null;
   }
 
 }

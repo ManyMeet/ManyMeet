@@ -28,6 +28,12 @@ export class Calendar {
   @Property()
   maxHour: string;
 
+  @Property({nullable:true})
+  defaultTitle: string;
+
+  @Property({nullable: true})
+  defaultDuration: number;
+
   @ManyToMany(()=> User, user => user.calendars)
   users = new Collection<User>(this);
 
@@ -42,8 +48,8 @@ export class Calendar {
     this.title = title,
     this.start = start,
     this.end = end,
-    this.minHour = '0',
-    this.maxHour = '24'
+    this.minHour = '00:00',
+    this.maxHour = '23:59'
   }
 
 }

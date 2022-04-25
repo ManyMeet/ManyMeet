@@ -4,7 +4,7 @@ import { CalendarRepository } from './calender.repository';
 import { CreateCalendarDto } from './dto/create-calendar.dto';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { User } from '../user/user.entity';
-import { Calendar  as CalendarEntity} from './calendar.entity';
+import { Calendar as CalendarEntity } from './calendar.entity';
 import { UpdateCalendarDto } from './dto/update-calendar.dto';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository } from '@mikro-orm/postgresql';
@@ -13,20 +13,21 @@ import { Participant } from 'src/entitites/participant.entity';
 import { UpdateEventDto } from './dto/update-event-dto';
 import { UuidType } from '@mikro-orm/core';
 import { UpdateParticipantDto } from './dto/update-participant-dto';
+import { ignoreElements } from 'rxjs';
 const uuid = require('uuid')
 
 @Injectable()
 export class CalendarService {
-  
-  constructor ( 
+
+  constructor(
     private readonly calendarRepository: CalendarRepository,
-    
+
     @InjectRepository(Event)
     private readonly eventRepository: EntityRepository<Event>,
 
     @InjectRepository(Participant)
     private readonly participantRepository: EntityRepository<Participant>
-    ) {}
+  ) { }
 
 
   /**********************
@@ -34,17 +35,17 @@ export class CalendarService {
    **********************/
 
 
-  async create (dto: CreateCalendarDto, user: User) : Promise <ICalendarRO>{
-    const {id, title} = dto;
+  async create(dto: CreateCalendarDto, user: User): Promise<ICalendarRO> {
+    const { id, title } = dto;
     const start = new Date(dto.start);
     const end = new Date(dto.end);
-    
-    const exists = await this.calendarRepository.findOne({uuid:id});
+
+    const exists = await this.calendarRepository.findOne({ uuid: id });
 
     if (exists) {
       throw new HttpException({
         message: 'Input data validation failed',
-        errors: {general: 'Calendar exists'},
+        errors: { general: 'Calendar exists' },
       }, HttpStatus.BAD_REQUEST);
     }
     const calendar = new CalendarEntity(id, title, start, end);
@@ -52,42 +53,42 @@ export class CalendarService {
     await this.calendarRepository.persistAndFlush(calendar)
     return this.buildCalendarRo(calendar)
   }
-  
-  async find(id:string) : Promise <ICalendarRO> {
-    const exists = await this.calendarRepository.findOne({uuid: id}, {populate: ['users','events', 'participants']});
+
+  async find(id: string): Promise<ICalendarRO> {
+    const exists = await this.calendarRepository.findOne({ uuid: id }, { populate: ['users', 'events', 'participants'] });
     if (!exists) {
       throw new HttpException({
         message: 'Resource not found',
-        errors: {general: 'Calendar not found'},
+        errors: { general: 'Calendar not found' },
       }, HttpStatus.NOT_FOUND);
     }
     return this.buildCalendarRo(exists);
   }
 
-  async delete(id:string): Promise <{message:string, description:{'id':UuidType}}> {
-    const exists = await this.calendarRepository.findOne({uuid: id}, {populate: ['users','events', 'participants']});
+  async delete(id: string): Promise<{ message: string, description: { 'id': UuidType } }> {
+    const exists = await this.calendarRepository.findOne({ uuid: id }, { populate: ['users', 'events', 'participants'] });
     if (!exists) {
       throw new HttpException({
         message: 'Resource not found',
-        errors: {general: 'Calendar not found'},
+        errors: { general: 'Calendar not found' },
       }, HttpStatus.NOT_FOUND);
     }
     this.calendarRepository.removeAndFlush(exists);
-    return {message: 'deleted', description: {'id': exists.uuid}}
+    return { message: 'deleted', description: { 'id': exists.uuid } }
   }
 
-  async update(id:string, dto: UpdateCalendarDto) {
-    const cal = await this.calendarRepository.findOne({uuid:id}, {populate: ['events', 'users', 'participants']});
+  async update(id: string, dto: UpdateCalendarDto) {
+    const cal = await this.calendarRepository.findOne({ uuid: id }, { populate: ['events', 'users', 'participants'] });
     if (!cal) {
       throw new HttpException({
         message: 'Resource not found',
-        errors: {general: 'Calendar not found'}, 
+        errors: { general: 'Calendar not found' },
       }, HttpStatus.NOT_FOUND)
     }
-    
-    if (dto.id) {
-      cal.uuid = uuid.parse(dto.id);
-    }
+
+    // if (dto.id) {
+    //   cal.uuid = uuid.parse(dto.id);
+    // }
 
     if (dto.title) {
       cal.title = dto.title
@@ -95,7 +96,7 @@ export class CalendarService {
 
     if (dto.start) {
       cal.start = new Date(dto.start)
-    }    
+    }
 
     if (dto.end) {
       cal.end = new Date(dto.end)
@@ -109,19 +110,27 @@ export class CalendarService {
       cal.maxHour = dto.maxHour;
     }
 
-    if (dto.events && dto.events.length > 0) {
-      await Promise.all( 
+    if (dto.defaultDuration) {
+      cal.defaultDuration = dto.defaultDuration;
+    }
+
+    if (dto.defaultTitle) {
+      cal.defaultTitle = dto.defaultTitle;
+    }
+
+    if (dto.events !== undefined && dto.events.length > 0) {
+      await Promise.all(
         dto.events.map(async ev => {
-          const {id, title, start, end} = ev;
-          let event = await this.eventRepository.findOne({id});
+          const { id, title, start, end, meta } = ev;
+          let event = await this.eventRepository.findOne({ id });
           if (event) {
             if (title) event.title = title;
             if (start) event.start = new Date(start);
             if (end) event.end = new Date(end);
-            // add mentor??
-            // add startup??
+            if (meta) event.meta = meta;
+      
           } else {
-            event = new Event(id, title, start, end);
+            event = new Event(id, title, start, end, meta);
             await cal.events.add(event);
           }
           await this.eventRepository.persistAndFlush(event);
@@ -129,19 +138,20 @@ export class CalendarService {
       )
     }
 
-    if (dto.participants && dto.participants.length > 0) {
-      await Promise.all( 
-        dto.participants.map(async person => {
-          const {id, type, name, email} = person;
+    if (dto.participants !== undefined && dto.participants.length > 0) {
 
-          let participant = await this.participantRepository.findOne({id});
-          
+      await Promise.all(
+        dto.participants.map(async person => {
+          const { id, type, name, email } = person;
+
+          let participant = await this.participantRepository.findOne({ id });
+
           if (!participant) {
             participant = await this.participantRepository.findOne({
               email: email, calendar: cal
             });
           }
-          
+
           if (participant) {
             if (type) participant.type = type;
             if (name) participant.name = name;
@@ -154,11 +164,11 @@ export class CalendarService {
         })
       );
     }
-    
+
     await this.calendarRepository.persistAndFlush(cal);
-    
+
     return this.buildCalendarRo(cal)
-    
+
   }
 
   /*******************
@@ -167,79 +177,80 @@ export class CalendarService {
 
   async getEvents(id) {
     const events = await this.eventRepository.find({
-     calendar: id
+      calendar: id
     })
-    
+
     return this.buildEventsRo(events);
 
   }
 
   async getEvent(calendarId, eventId) {
     const event = await this.eventRepository.findOne({
-     id: eventId
+      id: eventId
     })
 
     if (!event || event.calendar.uuid !== calendarId) {
       throw new HttpException({
         message: 'Resource not Found',
-        errors: {general:'Event not found'}
+        errors: { general: 'Event not found' }
       }, HttpStatus.NOT_FOUND)
     }
 
     return this.buildEventRo(event);
-    
+
   }
-  
+
   async deleteEvent(calendarId, eventId) {
-    const event = await this.eventRepository.findOne({id:eventId, calendar: calendarId})
+    const event = await this.eventRepository.findOne({ id: eventId, calendar: calendarId })
     await this.eventRepository.removeAndFlush(event);
 
     return this.buildEventRo(event);
   }
-  
+
 
   async updateEvent(calendarId, eventId, dto: UpdateEventDto) {
-    const event = await this.eventRepository.findOne({id:eventId});
-    
+    const event = await this.eventRepository.findOne({ id: eventId });
+
     if (!event || event.calendar.uuid !== calendarId) {
       throw new HttpException({
-        message: 'Resource not found', 
-        errors: {general: 'Event not found'}
+        message: 'Resource not found',
+        errors: { general: 'Event not found' }
       }, HttpStatus.NOT_FOUND)
     }
 
-    const {title, start, end, clientId, providerId} = dto;
+    const { title, start, end, clientId, providerId, meta } = dto;
     if (title) event.title = title;
     if (start) event.start = new Date(start);
     if (end) event.end = new Date(end);
+    if (meta) event.meta = meta;
     if (clientId) {
-      const client = await this.participantRepository.findOne({id:clientId})
-      
+      const client = await this.participantRepository.findOne({ id: clientId })
+
       if (!client) {
         throw new HttpException({
-          message: 'Bad Request', 
-          errors: {general:"client doesn't exist"}
+          message: 'Bad Request',
+          errors: { general: "client doesn't exist" }
         }, HttpStatus.BAD_REQUEST)
-      } 
-      
+      }
+
       event.client = client;
-      
-    } 
+
+    }
     if (providerId) {
-      const provider = await this.participantRepository.findOne({id:providerId})
-      
+      const provider = await this.participantRepository.findOne({ id: providerId })
+
       if (!provider) {
         throw new HttpException({
-          message: 'Bad Request', 
-          errors: {general:"provider doesn't exist"}
+          message: 'Bad Request',
+          errors: { general: "provider doesn't exist" }
         }, HttpStatus.BAD_REQUEST)
-      } 
-      
-      event.provider = provider;  
-    } 
-    
-    await this.eventRepository.persistAndFlush(event)    
-    
+      }
+
+      event.provider = provider;
+    }
+
+    await this.eventRepository.persistAndFlush(event)
+
     return this.buildEventRo(event);
   }
 
@@ -248,19 +259,19 @@ export class CalendarService {
    * Participant functions *
    *************************/
   async getParticipants(calendarId) {
-    const participants = await this.participantRepository.find({calendar:calendarId}, {populate: ['events']});
+    const participants = await this.participantRepository.find({ calendar: calendarId }, { populate: ['events'] });
     return this.buildParticipantsRo(participants)
   }
 
   async getParticipant(calendarId, participantId) {
     const participant = await this.participantRepository.findOne({
-      id:participantId, calendar:calendarId
-    }, {populate: ['events']});
+      id: participantId, calendar: calendarId
+    }, { populate: ['events'] });
 
     if (!participant) {
       throw new HttpException({
         message: 'Resource not found',
-        errors: {general: 'Participant not found'}
+        errors: { general: 'Participant not found' }
       }, HttpStatus.NOT_FOUND)
     }
 
@@ -268,11 +279,11 @@ export class CalendarService {
   }
 
   async deleteParticipant(calendarId, participantId) {
-    const participant = await this.participantRepository.findOne({id:participantId, calendar:calendarId});
+    const participant = await this.participantRepository.findOne({ id: participantId, calendar: calendarId });
     if (!participant) {
       throw new HttpException({
         message: 'Resource not found',
-        errors: {general: 'Participant not found'}
+        errors: { general: 'Participant not found' }
       }, HttpStatus.NOT_FOUND)
     }
 
@@ -281,21 +292,21 @@ export class CalendarService {
   }
 
   async updateParticipant(calendarId, participantId, dto: UpdateParticipantDto) {
-    const participant = await this.participantRepository.findOne({id:participantId, calendar:calendarId});
-    
+    const participant = await this.participantRepository.findOne({ id: participantId, calendar: calendarId });
+
     if (!participant) {
       throw new HttpException({
         message: 'Resource not found',
-        errors: {general: 'Participant not found'}
+        errors: { general: 'Participant not found' }
       }, HttpStatus.NOT_FOUND)
     }
-    
-    const {email, name} = dto;
+
+    const { email, name } = dto;
     if (email) participant.email = email;
     if (name) participant.name = name;
 
     await this.participantRepository.persistAndFlush(participant);
-    
+
     return this.buildParticipantRo(participant)
   }
 
@@ -310,10 +321,10 @@ export class CalendarService {
         id: participant.id,
         name: participant.name,
         email: participant.email,
-        type: participant.type, 
-        events: participant.events ? participant.events.toArray().map(ev => ev.id) : [] 
+        type: participant.type,
+        events: participant.events ? participant.events.toArray().map(ev => ev.id) : []
       }
-    });      
+    });
   }
 
   private buildParticipantRo(participant: Participant) {
@@ -321,8 +332,8 @@ export class CalendarService {
       id: participant.id,
       name: participant.name,
       email: participant.email,
-      type: participant.type, 
-      events: participant.events ? participant.events.toArray().map(ev => ev.id) : [] 
+      type: participant.type,
+      events: participant.events ? participant.events.toArray().map(ev => ev.id) : []
     }
   }
 
@@ -333,6 +344,7 @@ export class CalendarService {
       title: event.title,
       start: event.start,
       end: event.end,
+      meta: event.meta,
       provider: event.provider,
       client: event.client,
       calendar: event.calendar?.uuid ? event.calendar.uuid.toString() : event.calendar.toString()
@@ -347,6 +359,7 @@ export class CalendarService {
         title: event.title,
         start: event.start,
         end: event.end,
+        meta: event.meta,
         provider: event.provider,
         client: event.client,
         calendar: event.calendar?.uuid ? event.calendar.uuid.toString() : event.calendar.toString()
@@ -357,20 +370,21 @@ export class CalendarService {
   private async buildCalendarRo(calendar: CalendarEntity) {
     const eventsMap = calendar.events.toArray().map(ev => {
       return {
-        title:ev.title,
+        title: ev.title,
         start: ev.start,
-        end:ev.end, 
+        end: ev.end,
         id: ev.id,
+        meta: ev.meta,
         calendar: ev.calendar?.uuid ? ev.calendar.uuid.toString() : ev.calendar.toString(),
         provider: ev.provider,
         client: ev.client
-      } 
+      }
     })
 
     const participantsMap = calendar.participants.toArray().map(p => {
       return {
         id: p.id.toString(),
-        name: p.name, 
+        name: p.name,
         email: p.email,
         type: p.type,
         calendar: p.calendar?.uuid ? p.calendar.uuid.toString() : p.calendar.toString(),
@@ -378,21 +392,23 @@ export class CalendarService {
       }
     })
 
-    const usersMap = calendar.users.toArray().map(u => {return {id: u.id, email: u.email}})
+    const usersMap = calendar.users.toArray().map(u => { return { id: u.id, email: u.email } })
 
     const calendarRo = {
       id: calendar.uuid.toString(),
-      title:calendar.title,
+      title: calendar.title,
       start: calendar.start.toISOString(),
       end: calendar.end.toISOString(),
       minHour: calendar.minHour || null,
       maxHour: calendar.maxHour || null,
+      defaultTitle: calendar.defaultTitle || 'open slot',
+      defaultDuration: calendar.defaultDuration || 30,
       events: eventsMap,
       participants: participantsMap,
       users: usersMap
     }
-    
-    return {calendar: calendarRo}
+
+    return { calendar: calendarRo }
 
   }
 
