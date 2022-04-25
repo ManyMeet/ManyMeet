@@ -23,7 +23,6 @@ export class CalendarController {
     @ReqUser() user: User, 
     @Body() calendarData: CreateCalendarDto
   ) {
-    console.log('USER', user)
     const data = await this.calendarService.create(calendarData, user);
     return data.calendar;
   }

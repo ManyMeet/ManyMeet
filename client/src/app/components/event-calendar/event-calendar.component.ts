@@ -1,23 +1,35 @@
 import {v4 as uuidv4 } from 'uuid';
-import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { CalendarView, CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild, AfterViewInit, ViewEncapsulation } from '@angular/core';
+import { CalendarView, CalendarEvent, CalendarMonthViewDay, CalendarDateFormatter } from 'angular-calendar';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { GoogleService } from 'src/app/services/google.service';
 import { ApiService } from 'src/app/services/api.service';
 import { EventDetailsDialogComponent } from '../event-details-dialog/event-details-dialog.component';
 import { colors } from './helpers/colors';
+import { CustomDateFormatter } from './helpers/custom-date-formatter.provider';
+import { calendarRO } from 'src/app/interfaces/calendar.interface';
+import { differenceInMinutes, startOfHour, startOfDay } from 'date-fns';
 
 @Component({
   selector: 'app-event-calendar',
   templateUrl: './event-calendar.component.html',
   styleUrls: ['./event-calendar.component.scss'],
   // changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  providers: [
+   { 
+    provide: CalendarDateFormatter, 
+    useClass: CustomDateFormatter
+    },
+  ]
 })
-export class EventCalendarComponent implements OnInit {
-  // get calendar details from server
+export class EventCalendarComponent implements AfterViewInit {
 
+  @ViewChild('scrollContainer') scrollContainer?: ElementRef<HTMLElement>;
+
+  opened: boolean = true;
   viewDate: Date = new Date();
   minDate?: Date; 
   maxDate?: Date;
@@ -27,23 +39,26 @@ export class EventCalendarComponent implements OnInit {
   CalendarView = CalendarView;
   authorized: string | null = localStorage.getItem('authorized');
   events: CalendarEvent[] = [];
+  calendar?: calendarRO;
 
-  allowance: number = 10;
-  created: number = 0;
+  clickedDate: Date | undefined = undefined;
+  clickedColumn: number | undefined= undefined;
+  // allowance: number = 10;
+  // created: number = 0;
 
-  // refresh = new Subject<void>();
+  refresh = new Subject<void>();
 
   constructor (
     public eventDialog:MatDialog,
     private googleService: GoogleService,
     private apiService: ApiService,
     private route: ActivatedRoute,
+    private router: Router
     ) {
       const id = this.route.snapshot.paramMap.get('calendarId');
       if (id) {
         this.apiService.getCalendar(id).subscribe(calendar => {
-          console.log('CAL>>>>>', calendar)
-        
+          this.calendar = calendar;
           this.viewDate = new Date(Date.parse(calendar.start));
           this.minDate = this.viewDate;
           this.maxDate = new Date(Date.parse(calendar.end));
@@ -56,23 +71,25 @@ export class EventCalendarComponent implements OnInit {
               end: new Date(Date.parse(ev.end)),
             }
           });
-          // this.refresh.next();
+          this.scrollToView();
+          this.refresh.next();
         })
        }
      }
 
-  ngOnInit () : void {
-    
-  } 
 
-  dateIsValid(date: Date): boolean {
+  ngAfterViewInit() {
+    // this.scrollToView();
+  }
+
+  isDateValid(date: Date): boolean {
     let validDate: boolean = true;
     let validHour: boolean = true;
     if (this.minDate && this.maxDate) {
-      validDate = date >= this.minDate && date <= this.maxDate;
+      validDate = (date >= this.minDate) && (date <= this.maxDate);
     }
     if (this.minHour && this.maxHour) {
-      validHour = date.getHours() >= this.minHour && date.getHours() <= this.maxHour;
+      validHour = (date.getHours() >= this.minHour) && (date.getHours() <= this.maxHour);
     }
 
     return validDate && validHour;
@@ -97,8 +114,8 @@ export class EventCalendarComponent implements OnInit {
   }
 
   dayClicked(date:Date, events?:CalendarEvent[]) :void {
-    if (!this.dateIsValid(date)) return;
-    if (this.created < this.allowance) {
+    if (!this.isDateValid(date)) return;
+    // if (this.created < this.allowance) {
       const newEvent: CalendarEvent = {
         start:date,
         end: new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes()+45),
@@ -112,8 +129,9 @@ export class EventCalendarComponent implements OnInit {
         ...this.events,
         newEvent
       ]
-      this.created++;
-    }
+      this.refresh.next();
+      // this.created++;
+    // }
   }
 
   eventClicked({ event }: { event: CalendarEvent }): void {
@@ -136,15 +154,32 @@ export class EventCalendarComponent implements OnInit {
       if (data.action === 'save') {
         const ev = this.events.find(ev => ev.id === data.event.id);
         if (ev) ev.title = data.event.title;
-        this.events = [...this.events];
+        this.events = new Array(...this.events);
+        this.refresh.next();
       }
 
     })
     
   }
 
-  clickedDate: Date | undefined = undefined;
-  clickedColumn: number | undefined= undefined;
+
+
+  private scrollToView() {
+    if (this.view === CalendarView.Week || CalendarView.Day ) {
+      if (this.minDate){ 
+        const minutesSinceStartOfDay = differenceInMinutes(
+          startOfHour(this.minDate),
+          startOfDay(this.minDate)
+        )
+        if (this.scrollContainer){
+          const toScroll = this.scrollContainer.nativeElement.firstElementChild?.firstElementChild?.lastElementChild;
+          if (toScroll) {
+            toScroll.scrollTop = minutesSinceStartOfDay;
+          }
+        }
+      }
+    }
+  }
 
   google (): void {
     this.googleService.authorize()

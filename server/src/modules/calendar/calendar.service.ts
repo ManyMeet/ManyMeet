@@ -100,7 +100,6 @@ export class CalendarService {
     if (dto.end) {
       cal.end = new Date(dto.end)
     }
-    console.log('count outside', cal.events.count())
 
     if (dto.events && dto.events.length > 0) {
       await Promise.all( 
