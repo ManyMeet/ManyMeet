@@ -27,15 +27,110 @@
 </mat-toolbar>
 <mat-sidenav-container class="main-container">
   <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+    <mat-expansion-panel [expanded]="true" class="expansion-panel">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Calendar Details
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form id="update-calendar-form" [formGroup]="updateCalendarForm">
+       <mat-form-field appearance="outline">
+         <mat-label>Title</mat-label>
+         <input matInput placeholder="title" id="title" formControlName="title" required>
+       </mat-form-field>
+ 
+       <mat-form-field appearance="outline">
+         <mat-label>Start</mat-label>
+         <input [min]="minDate"  formControlName="startDate" matInput [matDatepicker]="startPicker">
+         <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+         <mat-datepicker #startPicker></mat-datepicker>
+         <mat-hint>MM-DD-YYY</mat-hint>
+       </mat-form-field>
+ 
+       <mat-form-field appearance="outline">
+         <mat-label>End</mat-label>
+         <input [min]="minDate"  formControlName="endDate" matInput [matDatepicker]="endPicker">
+         <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+         <mat-datepicker #endPicker></mat-datepicker>
+         <mat-hint>MM-DD-YYY</mat-hint>
+       </mat-form-field>
+ 
+       <mat-form-field appearance="outline">
+         <mat-label>Start Time</mat-label>
+         <input matInput placeholder="Start time" id="startTime" type="time" formControlName="startTime" required>
+         <mat-hint>HH:MM</mat-hint>
+        </mat-form-field>
+ 
+       <mat-form-field appearance="outline">
+         <mat-label>End Time</mat-label>
+         <input matInput placeholder="End time" id="endTime"  type="time" formControlName="endTime" required>
+         <mat-hint>HH:MM</mat-hint>
+       </mat-form-field>
+
+       <button (click)="handleCalendarUpdateSubmit()" mat-raised-button color="primary">Update Calendar Details</button>
+       
+      </form>
+    </mat-expansion-panel>
+    <mat-expansion-panel [expanded]="eventConfigOpened" class="expansion-panel">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Event Configuration
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form [formGroup]="eventConfigForm">
+        <mat-form-field appearance="outline">
+          <mat-label>Default Duration</mat-label>
+          <input matInput type="number" (change)="handleDurationChange()"   formControlName="duration" placeholder="Default Duration">
+          <mat-hint>Number of minutes</mat-hint>
+
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Default Title</mat-label>
+          <input matInput (change)="handleTitleChange()" formControlName="title" placeholder="Default Title">
+          <mat-hint>Default title for created events</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Default Event Description</mat-label>
+          <textarea matInput 
+                    (change)="handleDescriptionChange()"
+                    formControlName="description"
+                    placeholder="Event description ..."
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="3"
+                    cdkAutosizeMaxRows="5"></textarea>
+        <mat-hint>Default event description</mat-hint>
+
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Default Location</mat-label>
+          <input matInput (change)="handleLocationChange()" formControlName="location" placeholder="Location">
+          <mat-hint>Video conference link or location</mat-hint>
+
+        </mat-form-field>
+  
+        
+        <button (click)="handleEventUpdateSubmit()" mat-raised-button color="primary">Update Events</button>
+        
+      </form>
+    </mat-expansion-panel>
     
-     
-    
-    <div class="inner-container">
-      <button mat-raised-button color="primary" *ngIf="!authorized" class="sign-in" (click)="google()">Sign in with
-        Google</button>
-      <button mat-raised-button color="primary" *ngIf="authorized" class="sign-in" (click)="getEvents()">Get
-        Events</button>
-    </div>
+    <mat-expansion-panel [expanded]="false" class="expansion-panel">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+         Sync Calendars
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div class="inner-container">
+        <button mat-raised-button color="primary" *ngIf="!authorized" class="sign-in" (click)="google()">Sign in with
+          Google</button>
+        <button mat-raised-button color="primary" *ngIf="authorized" class="sign-in" (click)="getEvents()">Get
+          Events</button>
+      </div>
+    </mat-expansion-panel>
 
   </mat-sidenav>
   <mat-sidenav-content>
@@ -45,20 +140,22 @@
 
         <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
           (dayClicked)="dayClicked($event.day.date)" (eventClicked)="eventClicked($event)"
-          (beforeViewRender)="beforeMonthViewRender($event)" [refresh]="refresh">
+          (beforeViewRender)="beforeMonthViewRender($event)" [refresh]="refresh"
+          (eventTimesChanged)="eventTimesChanged($event)">
         </mwl-calendar-month-view>
 
 
         <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events"
           (dayHeaderClicked)="dayClicked($event.day.date)" (hourSegmentClicked)="dayClicked($event.date)"
-          (eventClicked)="eventClicked($event)" [hourSegmentTemplate]="weekViewHourSegmentTemplate">
-          [refresh]="refresh"
+          (eventClicked)="eventClicked($event)" [hourSegmentTemplate]="weekViewHourSegmentTemplate"
+          [refresh]="refresh" (eventTimesChanged)="eventTimesChanged($event)">
         </mwl-calendar-week-view>
 
 
         <mwl-calendar-day-view (eventClicked)="eventClicked($event)" *ngSwitchCase="CalendarView.Day"
           [viewDate]="viewDate" [events]="events" (hourSegmentClicked)="dayClicked($event.date)"
-          [hourSegmentTemplate]="weekViewHourSegmentTemplate"> [refresh]="refresh"
+          [hourSegmentTemplate]="weekViewHourSegmentTemplate" [refresh]="refresh" 
+          (eventTimesChanged)="eventTimesChanged($event)">
         </mwl-calendar-day-view>
 
 

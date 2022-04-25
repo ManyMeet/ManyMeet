@@ -8,10 +8,19 @@
 
 .close {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: -8px;
+  right: -16px;
 }
 
 .green {
   color: rgb(75, 128, 75);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+
+  .save {
+    margin-left: auto;
+  }
 }

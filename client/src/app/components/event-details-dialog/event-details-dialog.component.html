@@ -1,36 +1,41 @@
 <div class="container">
-  <button class="close" mat-icon-button color="warn" (click)="onCloseClick()">
+  <button class="close" mat-icon-button (click)="onCloseClick()">
     <mat-icon>close</mat-icon>
   </button>
   <h1 mat-dialog-title>Event Details</h1>
   <section mat-dialog-content [formGroup]="form">
-  <!-- <section mat-dialog-content> -->
-    <mat-form-field>
-      <input matInput
-             placeholder="Title"
-             value="{{calendarEvent.title}}"
-             formControlName="title"
-      >
-      <input 
-      type="hidden"
-      value="{{calendarEvent.id}}"
-      formControlName="id"
-      >
-    </mat-form-field>
+    <!-- <section mat-dialog-content> -->
+    <form [formGroup]="form">
+      <mat-form-field appearance="fill">
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title" id="title" placeholder="Default Title">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Event Description</mat-label>
+        <textarea matInput 
+                  formControlName="description"
+                  placeholder="Event description ..."
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Location</mat-label>
+        <input matInput formControlName="location" placeholder="Location">
+      </mat-form-field>
+
+      <input type="hidden" value="{{calendarEvent.id}}" formControlName="id">
+    </form>
   </section>
-    <section mat-dialog-actions>
-      <button 
-        mat-icon-button 
-        *ngIf="calendarEvent?.meta?.canBeDeleted" 
-        color="warn"
-        (click)="delete()">
-        <mat-icon>delete</mat-icon>
-      </button>
-      <button 
-        mat-icon-button 
-        class="green"
-        (click)="save()">
-        <mat-icon>save</mat-icon>
-      </button>
-    </section>
+  <section mat-dialog-actions>
+    <button mat-stroked-button *ngIf="calendarEvent.meta['canBeDeleted']" color="warn" (click)="delete()">
+      delete
+    </button>
+    <button mat-stroked-button class="save" color="primary" *ngIf="calendarEvent.meta['editable']" (click)="save()">
+      save
+    </button>
+  </section>
 </div>

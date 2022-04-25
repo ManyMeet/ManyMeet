@@ -1,7 +1,8 @@
-import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Inject, } from '@angular/core';
 import { CalendarEvent } from 'angular-calendar';
 import { MatDialogRef, MAT_DIALOG_DATA, } from '@angular/material/dialog'
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { EventProcessed, EventRO } from 'src/app/interfaces/event.interface';
 
 @Component({
   selector: 'app-event-details-dialog',
@@ -13,19 +14,27 @@ export class EventDetailsDialogComponent implements OnInit {
 
   form: FormGroup;
   title: string;
-  id: string | number | undefined;
+  id: string 
+  description: string;
+  location: string;
 
 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<EventDetailsDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public calendarEvent: CalendarEvent
+    @Inject(MAT_DIALOG_DATA) public calendarEvent: EventProcessed,
   ) {
+    
     this.title = calendarEvent.title;
-    this.id = calendarEvent.id
+    this.id = calendarEvent.id;
+    this.description = calendarEvent.meta['description'];
+    this.location = calendarEvent.meta['location'];
+
     this.form = this.fb.group({
-      title: [this.title, []],
-      id:[this.id, []]
+      title: [this.title, [Validators.required]],
+      id:[this.id, []],
+      description: [this.description],
+      location: [this.location]
     })
    }
 

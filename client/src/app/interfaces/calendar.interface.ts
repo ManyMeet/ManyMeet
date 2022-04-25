@@ -1,4 +1,4 @@
-import { EventRO } from "./event.interface";
+import { EventRO, EventDTO } from "./event.interface";
 import { participantRO } from "./participant.interface";
 import { UserPreviewRO } from "./user.interface";
 
@@ -16,6 +16,10 @@ export interface calendarRO {
   minHour: string;
   maxHour:string;
   end: string;
+  defaultDescription: string;
+  defaultLocation: string;
+  defaultTitle:string;
+  defaultDuration:number;
   events: EventRO[];
   participants: participantRO[],
   users: UserPreviewRO[]
@@ -36,4 +40,11 @@ export interface updateCalendarDTO {
   end?: string;
   minHour?: string;
   maxHour?: string;
+  defaultDescription?: string;
+  defaultLocation?: string;
+  defaultTitle?:string;
+  defaultDuration?:string;
+  events?: EventDTO[];
+  participants?: participantRO[],
+  users?: UserPreviewRO[]
 }
