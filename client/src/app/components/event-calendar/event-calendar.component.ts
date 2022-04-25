@@ -62,8 +62,8 @@ export class EventCalendarComponent implements AfterViewInit {
           this.viewDate = new Date(Date.parse(calendar.start));
           this.minDate = this.viewDate;
           this.maxDate = new Date(Date.parse(calendar.end));
-          this.minHour = 9;
-          this.maxHour = 21;
+          this.minHour = parseInt(calendar.minHour);
+          this.maxHour = parseInt(calendar.maxHour);
           this.events = calendar.events.map(ev => {
             return {
               ...ev, 
@@ -166,9 +166,9 @@ export class EventCalendarComponent implements AfterViewInit {
 
   private scrollToView() {
     if (this.view === CalendarView.Week || CalendarView.Day ) {
-      if (this.minDate){ 
+      if (this.minDate && this.minHour){ 
         const minutesSinceStartOfDay = differenceInMinutes(
-          startOfHour(this.minDate),
+          startOfHour(new Date().setHours(this.minHour)),
           startOfDay(this.minDate)
         )
         if (this.scrollContainer){

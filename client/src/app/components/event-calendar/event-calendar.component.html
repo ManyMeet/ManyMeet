@@ -27,6 +27,9 @@
 </mat-toolbar>
 <mat-sidenav-container class="main-container">
   <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+    
+     
+    
     <div class="inner-container">
       <button mat-raised-button color="primary" *ngIf="!authorized" class="sign-in" (click)="google()">Sign in with
         Google</button>
