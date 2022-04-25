@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { CalendarEvent } from 'angular-calendar';
 import { of, map, Observable, catchError } from 'rxjs';
 import { mocks } from 'src/mocks';
-import { calendarRO, createCalendarDTO } from '../interfaces/calendar.interface';
+import { calendarRO, createCalendarDTO, updateCalendarDTO } from '../interfaces/calendar.interface';
 import { ErrorResponse } from '../interfaces/error.interface';
 import { AuthService } from './auth.service';
 
@@ -57,7 +57,7 @@ export class ApiService {
         return of ({
           ok: false,
           message: err.error.message,
-          error: err.error.errors
+          errors: err.error.errors
         })
       }), 
       map(data => {
@@ -71,7 +71,38 @@ export class ApiService {
       })
     )
   }
+
+  updateCalendar(calendarData: updateCalendarDTO): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json'}),
+      withCredentials: true
+    }
+    return this.http.post<any>(`${this.BASE_URL}/calendar/${calendarData.id}`, calendarData, httpOptions )
+    .pipe(
+      catchError(err => {
+        console.log(err);
+        return of({
+          ok:false, 
+          message: err.error.message,
+          errors: err.error.errors
+        })
+      }),
+      map(data => {
+        if (data.ok === undefined) {
+          data.ok = true;
+          return data;
+        }
+        return data;
+      }) 
+    )
+    
+    
+  }
+
+
 }
+
+
 
 
 interface CalendarData {
