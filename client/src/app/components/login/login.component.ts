@@ -63,7 +63,6 @@ export class LoginComponent implements OnInit {
     const password = this.form.controls['password'].value;
     this.authService.login(email, password).subscribe(data => {
       if (!data.ok) {
-        console.log(data)
 
         this.errors.email = data.errors['general'];
         this.errors.password = data.errors['general']
@@ -71,9 +70,7 @@ export class LoginComponent implements OnInit {
         this.form.controls['password'].setErrors({invalid: true})
         this.form.updateValueAndValidity();
       } else {
-        // navigate to
         this.router.navigate(['dashboard'], {state:data});
-
       }
     })
   
