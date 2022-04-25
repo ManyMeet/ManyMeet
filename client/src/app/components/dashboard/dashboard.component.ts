@@ -20,7 +20,6 @@ export class DashboardComponent implements OnInit {
   pastCalendars: UserRO['calendars'] = [];
 
   constructor(
-    private route: ActivatedRoute, 
     private router:Router,
     private dialog: MatDialog,
     private calendarService : ApiService
@@ -47,7 +46,6 @@ export class DashboardComponent implements OnInit {
 
   openCal(cal: calendarPreview) {
     this.router.navigate([cal.id])
-    // console.log('Opening --->>>', cal.id)
 
   }
 
@@ -63,10 +61,8 @@ export class DashboardComponent implements OnInit {
     
     dialogRef.afterClosed().subscribe(
       (calData: createCalendarDTO ) => {
-        console.log('i am here')
         this.calendarService.createCalendar(calData).subscribe( data => { 
           if (data.ok) {
-            console.log(data)
 
             const updatedCalendars = [
               {

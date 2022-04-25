@@ -1,6 +1,9 @@
 <!-- <app-calendar-mini [data]="calendars[0]"></app-calendar-mini> -->
 <section>
-  <h2>Upcoming Event Calendars</h2>
+  <div class="header">
+    <h2>Upcoming Event Calendars</h2> 
+    <button mat-raised-button color="primary" (click)="openDialog()">Add</button>
+  </div>
   <div>
     <app-calendar-mini *ngFor="let cal of calendars;" (click)="openCal(cal)" [data]="cal" ></app-calendar-mini>
     <mat-card (click)="openDialog()">
