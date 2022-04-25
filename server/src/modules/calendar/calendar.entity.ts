@@ -41,7 +41,9 @@ export class Calendar {
     this.uuid = id ? id : uuid.v4()
     this.title = title,
     this.start = start,
-    this.end = end
+    this.end = end,
+    this.minHour = '0',
+    this.maxHour = '24'
   }
 
 }

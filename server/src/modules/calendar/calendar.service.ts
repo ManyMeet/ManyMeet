@@ -385,6 +385,8 @@ export class CalendarService {
       title:calendar.title,
       start: calendar.start.toISOString(),
       end: calendar.end.toISOString(),
+      minHour: calendar.minHour || null,
+      maxHour: calendar.maxHour || null,
       events: eventsMap,
       participants: participantsMap,
       users: usersMap

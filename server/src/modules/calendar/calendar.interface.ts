@@ -8,8 +8,8 @@ export interface ICalendarData {
   start: string;
   end: string;
 
-  minHour: string;
-  maxHour: string;
+  minHour: string | null;
+  maxHour: string | null;
   
   participants:ParticipantInterface[],
   events: EventInterface[]
@@ -19,7 +19,6 @@ export interface ICalendarData {
 export interface ICalendarRO {
   calendar: ICalendarData
 }
-
 
 
 interface EventInterface {
