@@ -33,7 +33,6 @@ export class ApiService {
         throw new Error(err);
       }),
       map(data => {
-        console.log('DATA >>>>>', data)
         if (data.ok === undefined) {
           return {
             ...data.calendar, 

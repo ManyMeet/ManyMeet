@@ -37,7 +37,7 @@ export class CalendarMiniComponent implements OnInit {
       day: 'numeric'
     };
 
-    const dtf = new Intl.DateTimeFormat(undefined, options);
+    const dtf = new Intl.DateTimeFormat([], options);
     return dtf.format(date);
   }
 }

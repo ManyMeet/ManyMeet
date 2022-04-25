@@ -96,7 +96,7 @@ export class DashboardComponent implements OnInit {
   }
 
   populateCals (calendars: calendarPreview[]) {
-    let today = new Date();
+    const today = new Date();
     const pastCalendars : calendarPreview[] = [];
     const futureCalendars: calendarPreview[] = [];
 
