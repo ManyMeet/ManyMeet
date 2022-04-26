@@ -8,7 +8,7 @@ const uuid = require('uuid');
 @Entity()
 export class Participant {
   @PrimaryKey()
-  id: UuidType;
+  id: string;
   
   @Property()
   @IsEmail()
@@ -20,17 +20,35 @@ export class Participant {
   @Property()
   name: string;
 
+  @Property({nullable:true})
+  description: string;
+
+  @Property()
+  subject: string;
+
+  @Property()
+  message: string;
+
+  @Property()
+  emailSent: boolean;
+
   @ManyToOne()
   calendar: Calendar
 
   @OneToMany(() => Event, event => event.provider || event.client)
   events = new Collection<Event>(this)
 
-  constructor (email:string, name:string, type:ParticipantType) {
-    this.email = email;
-    this.type = type;
+  constructor (data) {
+    const {id, name, email, description, type, subject, message, emailSent} = data;
+  
+    this.id = id;
     this.name = name;
-    this.id = uuid.v4();
+    this.email = email;
+    this.description = description;
+    this.type = type;
+    this.subject = subject;
+    this.message = message;
+    this.emailSent = emailSent
   }
 
 }

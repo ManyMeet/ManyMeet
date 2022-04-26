@@ -34,5 +34,8 @@ interface ParticipantInterface {
   email: string,
   type: string,
   id: string,
-  calendar: string
+  calendar: string,
+  message: string,
+  subject: string,
+  emailSent: boolean,
 }

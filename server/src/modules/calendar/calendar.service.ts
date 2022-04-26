@@ -151,7 +151,7 @@ export class CalendarService {
 
       await Promise.all(
         dto.participants.map(async person => {
-          const { id, type, name, email } = person;
+          const { id, type, name, email, message, subject, emailSent, description } = person;
 
           let participant = await this.participantRepository.findOne({ id });
 
@@ -165,8 +165,11 @@ export class CalendarService {
             if (type) participant.type = type;
             if (name) participant.name = name;
             if (email) participant.email = email;
+            if (message) participant.message = message;
+            if (subject) participant.subject = subject;
+            if (emailSent) participant.emailSent = emailSent;
           } else {
-            participant = new Participant(email, name, type)
+            participant = new Participant({id, name, email, description, type, subject, message, emailSent})
             await cal.participants.add(participant)
           }
           await this.participantRepository.persistAndFlush(participant);
@@ -392,12 +395,16 @@ export class CalendarService {
 
     const participantsMap = calendar.participants.toArray().map(p => {
       return {
-        id: p.id.toString(),
+        id: p.id,
         name: p.name,
         email: p.email,
         type: p.type,
+        description: p.description,
+        subject: p.subject, 
+        message: p.message,
+        emailSent: p.emailSent,
         calendar: p.calendar?.uuid ? p.calendar.uuid.toString() : p.calendar.toString(),
-        // events: p.events? p.events.map(e => e.id) : []
+        events: p.events? p.events.map(e => e.id) : []
       }
     })
 
