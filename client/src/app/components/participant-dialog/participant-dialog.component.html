@@ -1,0 +1,68 @@
+<div class="container">
+  <button class="close" mat-icon-button (click)="onCloseClick()">
+    <mat-icon>close</mat-icon>
+  </button>
+  <h1 mat-dialog-title>Participant Details</h1>
+  <form [formGroup]="form">
+  <section class="content" mat-dialog-content>
+    <!-- <section mat-dialog-content> -->
+      <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" id="name">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Description</mat-label>
+        <textarea matInput 
+                  formControlName="description"
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="3"
+                  cdkAutosizeMaxRows="10"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Participant Type</mat-label>
+        <mat-select formControlName="type" required="">
+          <mat-option value="provider">Provider</mat-option>
+          <mat-option value="client">Client</mat-option>
+        </mat-select>
+        <mat-hint>Providers offer times and clients book times</mat-hint>
+      </mat-form-field>
+
+      <mat-divider></mat-divider>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Subject</mat-label>
+        <input matInput formControlName="subject">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Message</mat-label>
+        <textarea matInput 
+                  formControlName="message"
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="3"
+                  cdkAutosizeMaxRows="10"></textarea>
+      </mat-form-field>
+
+     
+
+      <input type="hidden" value="{{participant.id}}" formControlName="id">
+    </section>
+    <section mat-dialog-actions>
+      <button mat-stroked-button color="warn" (click)="delete()">
+        delete
+      </button>
+      <button mat-stroked-button type="submit" class="save" color="primary" (click)="save()">
+        save
+      </button>
+    </section>
+  </form>
+</div>

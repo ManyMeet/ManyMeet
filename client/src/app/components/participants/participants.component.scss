@@ -11,6 +11,10 @@
     margin-right: 16px;
   }
 
+  .ml-auto {
+    margin-left: auto;
+  }
+
   .back-button {
     margin-right: 16px;
   }
@@ -62,6 +66,9 @@
 
 }
 
+
+
+
 .main-container {
   padding-top : 64px;
   height: 100%;
@@ -97,78 +104,64 @@
     background-color: #efefef;
     // padding: 24px;
     padding-top: 88px;
+    
+  }
 
-    .expansion-panel {
-      border: none;
-      box-shadow: none;
-      background-color: transparent;
-      margin-bottom: 16px;
+  .participant-container {
+    padding: 24px;
+  }
 
-      .mat-expansion-panel-header {
-        // padding-left: 0;
-        font-weight: 600;
-        color: #2d2d2d;
-        
-        .mat-expansion-indicator::after {
-          color: #2d2d2d;
-        }
-      }      
+  .expansion-panel {
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+    margin-bottom: 16px;
 
-      form {
-        mat-form-field {
-          width: 100%;
-          margin-bottom: 16px;
-        }
-        
-        button {
-          display: block;
-          margin-left: auto;
-        }
+
+
+
+    .mat-expansion-panel-header {
+      // padding-left: 0;
+      font-weight: 600;
+      color: #2d2d2d;
+      display: flex;
+      align-items: center;
+       
+      h2 {
+        margin: 0;
+        margin-right: 16px;
       }
 
+      .mat-expansion-indicator::after {
+        color: #2d2d2d;
+      }
+    }      
+
+    form {
+      mat-form-field {
+        width: 100%;
+        margin-bottom: 16px;
+      }
+      
+      button {
+        display: block;
+        margin-left: auto;
+      }
     }
 
+    table {
+      width: 100%;
 
+      .participant-row{ 
+        cursor: pointer;
+        &:hover {
+          background-color: rgba(0,0,0,0.01)
+        }
+
+      }
+    };
   }
 
 
-  .cal-week-view .cal-time-events .cal-day-column {
-    margin-right: 10px;
-  }
-
-  .cal-week-view .cal-hour {
-    width: calc(100% + 10px);
-    // background-color: red;
-  }
-
-  .cal-disabled {
-    background-color: #eee;
-    // pointer-events: none;
-  }
-
-  .cal-disabled .cal-day-number {
-    opacity: 0.1;
-  }
-
-  .calContainer {
-    height: calc(100vh - 100px);
-    overflow-y: auto;
-
-    .cal-day-headers {
-      position: sticky ;
-      top: 0;
-      background-color: white;
-      z-index: 1000;
-    }
-
-
-    // .cal-week-view {
-    //   .cal-time-events {
-    //     max-height: calc(100vh - 148px);
-    //     // height: 100%;
-    //     overflow-y: auto;
-    //   }
-    // } 
-  }
 
 }

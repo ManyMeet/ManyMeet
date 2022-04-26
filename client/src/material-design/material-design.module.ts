@@ -11,15 +11,20 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDatepickerModule} from '@angular/material/datepicker';
-import { MatExpansionModule } from '@angular/material/expansion'
-import { MatBadgeModule } from '@angular/material/badge'
-
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import { MatDividerModule } from '@angular/material/divider';
+  
 const modules: any = [
   MatButtonModule, MatIconModule, MatDialogModule,
   MatFormFieldModule, MatInputModule, MatCardModule,
   MatStepperModule, MatNativeDateModule, MatSidenavModule,
   MatToolbarModule, MatMenuModule, MatDatepickerModule, 
-  MatExpansionModule, MatBadgeModule]
+  MatExpansionModule, MatBadgeModule, MatSelectModule,
+  MatTableModule, MatDividerModule,
+]
 
 
 

@@ -5,6 +5,7 @@ import { EventCalendarComponent } from './components/event-calendar/event-calend
 import { GoogleAuthComponent } from './components/google-auth/google-auth.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
+import { ParticipantsComponent } from './components/participants/participants.component';
 import { RegisterComponent } from './components/register/register.component';
 
 const routes: Routes = [
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path:'auth/login', component:LoginComponent},
   {path:'dashboard', component:DashboardComponent},
   {path:':calendarId', component:EventCalendarComponent },
+  {path:':calendarId/participants', component:ParticipantsComponent },
 ];
 
 @NgModule({

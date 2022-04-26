@@ -50,6 +50,7 @@ export class EventCalendarComponent implements AfterViewInit {
   updateCalendarForm: FormGroup;
   eventConfigForm: FormGroup;
   eventConfigOpened = false;
+  calendarDetailsOpened = true;
 
   defaultDuration = 30;
   defaultTitle = 'Open Slot';
@@ -74,6 +75,7 @@ export class EventCalendarComponent implements AfterViewInit {
         this.viewDate = new Date(Date.parse(calendar.start));
         this.minDate = this.viewDate;
         this.maxDate = new Date(Date.parse(calendar.end));
+        this.maxDate.setHours(23,59,59,59)
         const[minHour,minMinutes] = calendar.minHour.split(":")
         const [maxHour, maxMinutes] = calendar.maxHour.split(":")
         this.minHour = new Date(0);
@@ -192,6 +194,7 @@ export class EventCalendarComponent implements AfterViewInit {
     if (!this.isDateValid(date)) return;
 
     this.eventConfigOpened = true;
+    this.calendarDetailsOpened = false;
     const newEvent: CalendarEvent = {
       start: date,
       end: new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes() + this.defaultDuration),

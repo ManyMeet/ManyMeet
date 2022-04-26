@@ -19,6 +19,8 @@ import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { CalendarMiniComponent } from './components/calendar-mini/calendar-mini.component';
 import { CreateCalendarDialogComponent } from './components/create-calendar-dialog/create-calendar-dialog.component';
+import { ParticipantsComponent } from './components/participants/participants.component';
+import { ParticipantDialogComponent } from './components/participant-dialog/participant-dialog.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,8 @@ import { CreateCalendarDialogComponent } from './components/create-calendar-dial
     DashboardComponent,
     CalendarMiniComponent,
     CreateCalendarDialogComponent,
+    ParticipantsComponent,
+    ParticipantDialogComponent,
   ],
   imports: [
     BrowserModule,

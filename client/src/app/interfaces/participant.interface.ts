@@ -6,7 +6,12 @@ export interface participantRO {
   email: string;
   type: 'provider' | 'client';
   calendar: string;
-  // events: EventRO[]
+  emailSent: boolean;
+  subject: string;
+  message: string;
+  booked: boolean;
+  description: string;
+  events?: EventRO[]
 }
 
 

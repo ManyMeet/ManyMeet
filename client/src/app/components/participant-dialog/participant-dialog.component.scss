@@ -1,0 +1,22 @@
+// :host {
+//   display: relative;
+// }
+
+.container {
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: -8px;
+  right: -16px;
+}
+
+.green {
+  color: rgb(75, 128, 75);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}

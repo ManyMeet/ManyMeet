@@ -24,6 +24,7 @@
       <button mat-menu-item (click)="changeView(CalendarView.Month)">Month</button>
     </mat-menu>
   </div>
+  <button mat-stroked-button class="mr-16" routerLink="/{{id}}/participants">Manage participants</button>
   <button mat-raised-button 
           color="primary" 
           (click)="handleEventUpdateSubmit()"
@@ -32,7 +33,7 @@
 </mat-toolbar>
 <mat-sidenav-container class="main-container">
   <mat-sidenav #sidenav mode="side" [(opened)]="opened">
-    <mat-expansion-panel [expanded]="true" class="expansion-panel">
+    <mat-expansion-panel [expanded]="calendarDetailsOpened" class="expansion-panel">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Calendar Details
