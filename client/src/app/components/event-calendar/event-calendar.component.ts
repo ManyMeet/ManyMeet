@@ -55,6 +55,7 @@ export class EventCalendarComponent implements AfterViewInit {
   defaultTitle = 'Open Slot';
   defaultDescription = '';
   defaultLocation = '';
+  eventsAreSaved = true;
 
   refresh = new Subject<void>();
 
@@ -160,6 +161,11 @@ export class EventCalendarComponent implements AfterViewInit {
     newStart,
     newEnd,
   }: CalendarEventTimesChangedEvent): void {
+    if (event.start.toISOString() !== newStart.toISOString() &&
+        event.end?.toISOString() !== newEnd?.toDateString 
+    ) {
+      this.eventsAreSaved = false;
+    }
     event.start = newStart;
     event.end = newEnd;
     this.refresh.next();
@@ -204,6 +210,7 @@ export class EventCalendarComponent implements AfterViewInit {
         syncedEvent: false
       }
     }
+    this.eventsAreSaved = false;
     this.events = [
       ...this.events,
       newEvent
@@ -224,6 +231,7 @@ export class EventCalendarComponent implements AfterViewInit {
 
       if (data.action === 'delete') {
         this.events = this.events.filter(ev => ev.id !== data.event.id);
+        this.eventsAreSaved = false;
       };
 
       if (data.action === 'save') {
@@ -231,7 +239,9 @@ export class EventCalendarComponent implements AfterViewInit {
         if (ev) ev.title = data.event.title;
         this.events = new Array(...this.events);
         this.refresh.next();
+        this.eventsAreSaved = false;
       }
+      
     })
 
   }
@@ -250,7 +260,7 @@ export class EventCalendarComponent implements AfterViewInit {
           startOfDay(this.minDate)
         )
         if(this.scrollContainer) {
-          this.scrollContainer.nativeElement.scrollTop = (minutesSinceStartOfDay + 30);
+          this.scrollContainer.nativeElement.scrollTop = (minutesSinceStartOfDay - 30);
         }
       }
     }
@@ -375,6 +385,28 @@ export class EventCalendarComponent implements AfterViewInit {
     }
   }
 
+  handleEventConfigSubmit() {
+    const updateCalendarData: updateCalendarDTO = {
+      defaultDescription: this.eventConfigForm.value.description,
+      defaultDuration: this.eventConfigForm.value.duration,
+      defaultLocation: this.eventConfigForm.value.location,
+      defaultTitle: this.eventConfigForm.value.title,
+      id: this.id,
+    }
+    
+
+    this.apiService.updateCalendar(updateCalendarData).subscribe(res => {
+      if (res.ok) {
+        console.log('boom bitches');
+      } else {
+        console.log('cry bitch!');
+      }
+    })
+
+  }
+
+
+
   handleEventUpdateSubmit() {
     
     if (this.id !== ''){ 
@@ -408,6 +440,7 @@ export class EventCalendarComponent implements AfterViewInit {
   
       this.apiService.updateCalendar(updateCalendarData).subscribe(res => {
         if (res.ok) {
+          this.eventsAreSaved = true;
           console.log('boom bitches');
         } else {
           console.log('cry bitch!');

@@ -24,6 +24,11 @@
       <button mat-menu-item (click)="changeView(CalendarView.Month)">Month</button>
     </mat-menu>
   </div>
+  <button mat-raised-button 
+          color="primary" 
+          (click)="handleEventUpdateSubmit()"
+          matBadge="&#8203;" matBadgeColor="warn"
+          matBadgeHidden={{eventsAreSaved}}>Save Events</button>
 </mat-toolbar>
 <mat-sidenav-container class="main-container">
   <mat-sidenav #sidenav mode="side" [(opened)]="opened">
@@ -112,7 +117,7 @@
         </mat-form-field>
   
         
-        <button (click)="handleEventUpdateSubmit()" mat-raised-button color="primary">Update Events</button>
+        <button (click)="handleEventConfigSubmit()" mat-raised-button color="primary">Save Settings</button>
         
       </form>
     </mat-expansion-panel>
