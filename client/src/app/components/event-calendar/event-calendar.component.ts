@@ -93,15 +93,27 @@ export class EventCalendarComponent implements AfterViewInit {
             start: new Date(Date.parse(ev.start)),
             end: new Date(Date.parse(ev.end)),
             meta: JSON.parse(ev.meta),
-          
           }
+
           if (!ev.provider && !ev.client) {
             event.draggable = true;
             event.resizable = {
               beforeStart:true,
               afterEnd: true
             }
+          } else {
+            if(ev.provider && !ev.client) {
+              event.meta.canBeDeleted = false;
+              event.cssClass = 'hasProvider';
+            } 
+            
+            if(ev.provider && ev.client) {
+              event.meta.canBeDeleted = false;
+              event.cssClass = 'hasClient';
+            }
+
           }
+
           return event
         });
         this.scrollToView();

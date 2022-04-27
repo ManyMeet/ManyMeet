@@ -112,7 +112,7 @@
             Add Participants
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <form [formGroup]="addParticipantForm" (submit)="addParticipant()">
+        <form [formGroup]="addParticipantForm" id="addParticipantForm" (submit)="addParticipant()">
           <mat-form-field appearance="outline">
             <mat-label>Name</mat-label>
             <input matInput formControlName="name" placeholder="Name" required>

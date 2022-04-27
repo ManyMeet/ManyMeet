@@ -1,5 +1,5 @@
 import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { calendarPreview, updateCalendarDTO } from 'src/app/interfaces/calendar.interface';
@@ -245,6 +245,10 @@ export class ParticipantsComponent implements OnInit {
       }
       this.sortParticipants([...this.clients, ...this.providers, participant])
       this.participantsAreSaved = false;
+      
+      const resetForm:HTMLFormElement = document.getElementById('addParticipantForm') as HTMLFormElement;
+      resetForm.reset()
+  
     }
   }
 

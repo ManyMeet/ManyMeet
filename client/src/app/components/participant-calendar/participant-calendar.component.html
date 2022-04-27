@@ -1,0 +1,94 @@
+<mat-toolbar id="cal-top-bar" class="top-bar">
+
+  <div class="logo" style="background-image: url('https://gradient-avatar.glitch.me/{{ calendar?.title }}?size=32');">
+    {{ calendar?.title | slice:0:2 }}
+  </div>
+  <h2 class="cal-title">{{ calendar?.title }}</h2>
+  <div class="calendar-nav">
+    <button mat-icon-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate">
+      <mat-icon>arrow_back_ios_new</mat-icon>
+    </button>
+    <button mat-icon-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate">
+      <mat-icon>arrow_forward_ios_new</mat-icon>
+    </button>
+  </div>
+  <h2 class="cal-date-range">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h2>
+  <p class="instructions">Please mark your availability</p>
+  <div class="cal-view">
+    <button mat-stroked-button class="cal-view-trigger" [mat-menu-trigger-for]="calViewMenu">{{ view }}<mat-icon>
+        arrow_drop_down</mat-icon></button>
+    <mat-menu #calViewMenu="matMenu" xPosition="before">
+      <button mat-menu-item (click)="changeView(CalendarView.Day)">Day</button>
+      <button mat-menu-item (click)="changeView(CalendarView.Week)">Week</button>
+      <button mat-menu-item (click)="changeView(CalendarView.Month)">Month</button>
+    </mat-menu>
+  </div>
+  <button mat-raised-button 
+          color="primary" 
+          (click)="handleEventUpdateSubmit()"
+          matBadge="&#8203;" matBadgeColor="warn"
+          matBadgeHidden={{eventsAreSaved}}>Save Selection
+  </button>
+</mat-toolbar>
+<mat-sidenav-container class="main-container">
+  <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+    
+    <mat-expansion-panel [expanded]="true" class="expansion-panel">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+         Sync Calendars
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div class="inner-container">
+        <button mat-raised-button color="primary" *ngIf="!authorized" class="sign-in" (click)="google()">Sign in with
+          Google</button>
+        <button mat-raised-button color="primary" *ngIf="authorized" class="sign-in" (click)="getEvents()">Get
+          Events</button>
+      </div>
+    </mat-expansion-panel>
+
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="calendar">
+
+      <div class="calContainer" #scrollContainer [ngSwitch]="view">
+
+        <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
+          (eventClicked)="eventClicked($event)"
+          (beforeViewRender)="beforeMonthViewRender($event)" [refresh]="refresh"
+          >
+        </mwl-calendar-month-view>
+
+
+        <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events"
+          (eventClicked)="eventClicked($event)" [hourSegmentTemplate]="weekViewHourSegmentTemplate"
+          [refresh]="refresh">
+        </mwl-calendar-week-view>
+
+
+        <mwl-calendar-day-view (eventClicked)="eventClicked($event)" *ngSwitchCase="CalendarView.Day"
+          [viewDate]="viewDate" [events]="events"
+          [hourSegmentTemplate]="weekViewHourSegmentTemplate" [refresh]="refresh" 
+          >
+        </mwl-calendar-day-view>
+
+
+      </div>
+
+
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<ng-template #weekViewHourSegmentTemplate let-segment="segment" let-locale="locale" let-segmentHeight="segmentHeight"
+  let-isTimeLabel="isTimeLabel">
+  <div #segmentElement class="cal-hour-segment" [style.height.px]="segmentHeight"
+    [class.cal-hour-start]="segment.isStart" [class.cal-after-hour-start]="!segment.isStart"
+    [class.cal-disabled]="!isDateValid(segment.date)" [ngClass]="segment.cssClass">
+    <div class="cal-time" *ngIf="isTimeLabel">
+      {{ segment.date | calendarDate:'weekViewHour':locale }}
+    </div>
+
+  </div>
+</ng-template>

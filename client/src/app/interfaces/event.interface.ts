@@ -13,7 +13,7 @@ export interface EventDTO {
   id: string | number;
   title: string;
   start: string;
-  end: string;
+  end?: string;
   provider?:string;
   client?: string;
   calendar: string;

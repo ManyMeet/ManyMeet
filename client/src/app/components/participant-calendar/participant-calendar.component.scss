@@ -6,9 +6,16 @@
   position: fixed;
   top: 0;
   z-index: 1000;
+  justify-content: space-evenly;
 
   .mr-16 {
     margin-right: 16px;
+  }
+
+  .instructions {
+    margin-bottom: 0;
+    font-size: 16px;
+    margin-left: auto;
   }
 
   .back-button {
@@ -82,7 +89,6 @@
   }
 
   h1 {
-
     font-weight: 700;
     margin: 0;
     margin-bottom: 48px;
@@ -94,6 +100,7 @@
     // position: relative;
 
     max-width: 300px;
+    min-width: 300px;
     background-color: #efefef;
     // padding: 24px;
     padding-top: 88px;
@@ -127,11 +134,25 @@
       }
 
     }
-
-
   }
 
+  .bookedEvent{
+    .cal-event {
+      background-color: rgb(255, 166, 0) !important;
 
+    }
+    span {
+      color: #2d2d2d;
+    }
+  }
+  .clientBooked{
+    .cal-event {
+      background-color: rgb(148, 62, 100) !important;
+    }
+    span {
+      color: white;
+    }
+  }
   .cal-week-view .cal-time-events .cal-day-column {
     margin-right: 10px;
   }
@@ -143,6 +164,7 @@
 
   .cal-disabled {
     background-color: #eee;
+   
     // pointer-events: none;
   }
 
@@ -159,25 +181,6 @@
       top: 0;
       background-color: white;
       z-index: 1000;
-    }
-
-    .hasProvider{
-      .cal-event {
-        background-color: rgb(255, 166, 0) !important;
-  
-      }
-      span {
-        color: #2d2d2d;
-      }
-    }
-
-    .hasClient {
-      .cal-event {
-        background-color: rgb(148, 62, 100) !important;
-      }
-      span {
-        color: white;
-      }
     }
 
 
