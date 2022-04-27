@@ -1,3 +1,4 @@
+import { TextType } from '@mikro-orm/core';
 import { Participant } from 'src/entitites/participant.entity';
 
 export class UpdateCalendarDto {
@@ -33,5 +34,5 @@ interface Event {
   title: string,
   start: string,
   end: string,
-  meta: string,
+  meta: TextType,
 }

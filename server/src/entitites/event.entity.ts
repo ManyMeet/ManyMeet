@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, PrimaryKey, Property } from "@mikro-orm/core";
+import { Entity, JsonType, ManyToOne, PrimaryKey, Property, TextType } from "@mikro-orm/core";
 import { Calendar } from "src/modules/calendar/calendar.entity";
 import { Participant } from "./participant.entity";
 
@@ -21,7 +21,7 @@ export class Event {
   end: Date;
 
   @Property({nullable:true})
-  meta: string;
+  meta: TextType;
 
   @ManyToOne(()=> Calendar, 'events')
   calendar: Calendar;
@@ -32,7 +32,7 @@ export class Event {
   @ManyToOne(() => Participant, 'events')
   client?: Participant
 
-  constructor (id:string, title: string, start: string, end: string, meta?: string) {
+  constructor (id:string, title: string, start: string, end: string, meta?: TextType) {
     this.id = id,
     this.start = new Date(start),
     this.end = new Date(end);

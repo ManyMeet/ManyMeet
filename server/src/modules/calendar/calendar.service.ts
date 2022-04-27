@@ -78,7 +78,6 @@ export class CalendarService {
   }
 
   async update(id: string, dto: UpdateCalendarDto) {
-    console.log('>>>>>>', dto)
     const cal = await this.calendarRepository.findOne({ uuid: id }, { populate: ['events', 'users', 'participants'] });
     if (!cal) {
       throw new HttpException({
@@ -131,8 +130,23 @@ export class CalendarService {
       await Promise.all(
         dto.events.map(async ev => {
           const { id, title, start, end, meta } = ev;
+          //@ts-ignore
+          const parsed = JSON.parse(meta);
           let event = await this.eventRepository.findOne({ id });
           if (event) {
+            if (parsed.delete ) {
+              await this.eventRepository.removeAndFlush(event);
+              return;
+            };
+            if (parsed.client) {
+              const client = await this.participantRepository.findOne({id: parsed.client});
+              if (client) event.client = client;
+            }
+            if (parsed.provider) {
+              const provider = await this.participantRepository.findOne({id: parsed.provider});
+              if (provider) event.provider = provider;
+            } 
+
             if (title) event.title = title;
             if (start) event.start = new Date(start);
             if (end) event.end = new Date(end);
@@ -140,6 +154,14 @@ export class CalendarService {
       
           } else {
             event = new Event(id, title, start, end, meta);
+            if (parsed.client) {
+              const client = await this.participantRepository.findOne({id: parsed.client});
+              if (client) event.client = client;
+            }
+            if (parsed.provider) {
+              const provider = await this.participantRepository.findOne({id: parsed.provider});
+              if (provider) event.provider = provider;
+            } 
             await cal.events.add(event);
           }
           await this.eventRepository.persistAndFlush(event);
