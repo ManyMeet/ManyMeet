@@ -12,7 +12,7 @@ A scheduling tool for event organizers that need to manage and facilitate meetin
  - Angular 2
 
 ## Contributing
-There are plenty of open issues and additional functionality documented in the Github issues tab. 
+There are [open issues](https://github.com/Roznoshchik/ManyMeet/issues) and additional functionality documented in the Github issues tab. 
 
 ## Running the app. 
 0. Install `server/` requirements with  `npm i` and install `client/` requirements with `npm i`.
