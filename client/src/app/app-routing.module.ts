@@ -10,7 +10,8 @@ import { ParticipantsComponent } from './components/participants/participants.co
 import { RegisterComponent } from './components/register/register.component';
 
 const routes: Routes = [
-  {path:'', component: HomeComponent},
+  {path:'', component: LoginComponent},
+  {path:'old', component: HomeComponent},
   {path:'auth/google', component: GoogleAuthComponent },
   {path:'auth/register', component:RegisterComponent},
   {path:'auth/login', component:LoginComponent},
