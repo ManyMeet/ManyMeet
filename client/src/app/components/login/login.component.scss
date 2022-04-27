@@ -5,6 +5,8 @@
   justify-content: center;
   height: 100vh;
 
+  flex-direction: column;
+
   width: 100%;
   height: 100vh;
   display: flex;
@@ -19,6 +21,25 @@
         rgba(255,53,127,1) 100%
   );  
   animation: AnimateBG 20s ease infinite;
+}
+
+.logo {
+  color: white;
+  text-align: center;
+  .mat-icon {
+    margin: 0;
+    height: 75px;
+    width: 75px;
+    font-size: 75px;  
+    margin-bottom: 24px;
+  
+  }
+  
+  h1{
+    font-weight: 900;
+    font-size: 48px;
+  }
+  margin-bottom: 44px;
 }
 
 .header {
@@ -94,3 +115,4 @@ form {
   50%{background-position:100% 50%}
   100%{background-position:0% 50%}
 }
+
