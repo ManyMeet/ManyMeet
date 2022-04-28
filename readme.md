@@ -2,6 +2,11 @@
 
 A scheduling tool for event organizers that need to manage and facilitate meetings for groups of people.
 
+![Screen shot from app](https://github.com/Roznoshchik/ManyMeet/blob/main/client/app_demo.png)
+
+- [Demo video](https://www.youtube.com/watch?v=FFEztDTd5Ls)
+
+
 ## Tech stack
 ### Backend
  - Postgres db
