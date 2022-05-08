@@ -1,8 +1,8 @@
 export interface IUserData {
   email: string;
-  id: number;
+  id: string;
 }
 
 export interface IUserRO {
-  user: IUserData
+  user: IUserData;
 }

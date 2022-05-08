@@ -8,12 +8,12 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
           "nullable": false,
-          "mappedType": "integer"
+          "mappedType": "string"
         },
         "email": {
           "name": "email",
@@ -174,12 +174,12 @@
       "columns": {
         "user_id": {
           "name": "user_id",
-          "type": "int",
+          "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "mappedType": "integer"
+          "mappedType": "string"
         },
         "calendar_uuid": {
           "name": "calendar_uuid",
@@ -313,6 +313,15 @@
           "nullable": false,
           "mappedType": "boolean"
         },
+        "access_token": {
+          "name": "access_token",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
         "calendar_uuid": {
           "name": "calendar_uuid",
           "type": "varchar(255)",
@@ -403,12 +412,12 @@
         },
         "meta": {
           "name": "meta",
-          "type": "varchar(255)",
+          "type": "text",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "mappedType": "string"
+          "mappedType": "text"
         },
         "calendar_uuid": {
           "name": "calendar_uuid",
