@@ -13,7 +13,7 @@ export class GoogleService {
   
   
   constructor( private http: HttpClient) { }
-  
+
   authorize(next?: Function) {
     if (next) next()
     else window.location.href = this.AuthUrl;

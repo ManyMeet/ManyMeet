@@ -1,8 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Inject, } from '@angular/core';
-import { CalendarEvent } from 'angular-calendar';
 import { MatDialogRef, MAT_DIALOG_DATA, } from '@angular/material/dialog'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EventProcessed, EventRO } from 'src/app/interfaces/event.interface';
+import { EventProcessed } from 'src/app/interfaces/event.interface';
 
 @Component({
   selector: 'app-event-details-dialog',

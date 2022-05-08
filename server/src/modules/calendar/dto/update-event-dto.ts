@@ -1,5 +1,3 @@
-import { TextType } from "@mikro-orm/core";
-
 export class UpdateEventDto {
   readonly id?: string;
   readonly title?: string;
@@ -7,6 +5,5 @@ export class UpdateEventDto {
   readonly end?: string;
   readonly clientId?: string;
   readonly providerId?: string;
-  readonly meta?: TextType;
+  readonly meta?: string;
 }
-

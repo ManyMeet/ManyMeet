@@ -9,7 +9,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { EventDetailsDialogComponent } from '../event-details-dialog/event-details-dialog.component';
 import { colors } from './helpers/colors';
 import { CustomDateFormatter } from './helpers/custom-date-formatter.provider';
-import { calendarRO, updateCalendarDTO } from 'src/app/interfaces/calendar.interface';
+import { calendarRO, googleCalendarListItem, updateCalendarDTO } from 'src/app/interfaces/calendar.interface';
 import { differenceInMinutes, startOfHour, startOfDay } from 'date-fns';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EventRO } from 'src/app/interfaces/event.interface';
@@ -40,10 +40,14 @@ export class EventCalendarComponent implements AfterViewInit {
   view: CalendarView = CalendarView.Week;
   CalendarView = CalendarView;
   authorized: string | null = localStorage.getItem('authorized');
+  googleAuthUrl?: string;
   events: CalendarEvent[] = [];
   calendar?: calendarRO;
-  id:string;
+  id: string;
 
+  googleAccounts: {[key:string] : googleCalendarListItem } = {};
+  listeningForMessage = false;
+  
   clickedDate: Date | undefined = undefined;
   clickedColumn: number | undefined = undefined;
 
@@ -61,7 +65,7 @@ export class EventCalendarComponent implements AfterViewInit {
   refresh = new Subject<void>();
 
   constructor(
-    public eventDialog: MatDialog,
+    public dialog: MatDialog,
     private googleService: GoogleService,
     private apiService: ApiService,
     private route: ActivatedRoute,
@@ -70,13 +74,12 @@ export class EventCalendarComponent implements AfterViewInit {
     this.id = this.route.snapshot.paramMap.get('calendarId') || '';
     if (this.id !== '') {
       this.apiService.getCalendar(this.id).subscribe(calendar => {
-        console.log(calendar)
         this.calendar = calendar;
         this.viewDate = new Date(Date.parse(calendar.start));
         this.minDate = this.viewDate;
         this.maxDate = new Date(Date.parse(calendar.end));
-        this.maxDate.setHours(23,59,59,59)
-        const[minHour,minMinutes] = calendar.minHour.split(":")
+        this.maxDate.setHours(23, 59, 59, 59)
+        const [minHour, minMinutes] = calendar.minHour.split(":")
         const [maxHour, maxMinutes] = calendar.maxHour.split(":")
         this.minHour = new Date(0);
         this.minHour.setHours(parseInt(minHour), parseInt(minMinutes))
@@ -87,8 +90,8 @@ export class EventCalendarComponent implements AfterViewInit {
         this.defaultLocation = calendar.defaultLocation;
         this.defaultTitle = calendar.defaultTitle;
         this.events = calendar.events.map(ev => {
-          const event : CalendarEvent= {
-            id:ev.id,
+          const event: CalendarEvent = {
+            id: ev.id,
             title: ev.title,
             start: new Date(Date.parse(ev.start)),
             end: new Date(Date.parse(ev.end)),
@@ -98,16 +101,16 @@ export class EventCalendarComponent implements AfterViewInit {
           if (!ev.provider && !ev.client) {
             event.draggable = true;
             event.resizable = {
-              beforeStart:true,
+              beforeStart: true,
               afterEnd: true
             }
           } else {
-            if(ev.provider && !ev.client) {
+            if (ev.provider && !ev.client) {
               event.meta.canBeDeleted = false;
               event.cssClass = 'hasProvider';
-            } 
-            
-            if(ev.provider && ev.client) {
+            }
+
+            if (ev.provider && ev.client) {
               event.meta.canBeDeleted = false;
               event.cssClass = 'hasClient';
             }
@@ -133,7 +136,7 @@ export class EventCalendarComponent implements AfterViewInit {
     }
 
     this.updateCalendarForm = this.fb.group({
-      title: ['', Validators.required], 
+      title: ['', Validators.required],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       startTime: ['', Validators.required],
@@ -141,11 +144,13 @@ export class EventCalendarComponent implements AfterViewInit {
     })
 
     this.eventConfigForm = this.fb.group({
-      duration: [this.defaultDuration], 
+      duration: [this.defaultDuration],
       title: [this.defaultTitle],
       description: [this.defaultDescription],
       location: [this.defaultLocation]
     })
+    const org = true;
+    this.apiService.getGoogleOAuthUrl(org).subscribe(url => this.googleAuthUrl = url);
 
   }
 
@@ -176,7 +181,7 @@ export class EventCalendarComponent implements AfterViewInit {
     newEnd,
   }: CalendarEventTimesChangedEvent): void {
     if (event.start.toISOString() !== newStart.toISOString() &&
-        event.end?.toISOString() !== newEnd?.toDateString 
+      event.end?.toISOString() !== newEnd?.toDateString
     ) {
       this.eventsAreSaved = false;
     }
@@ -212,8 +217,8 @@ export class EventCalendarComponent implements AfterViewInit {
       end: new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes() + this.defaultDuration),
       title: this.defaultTitle,
       id: uuidv4(),
-      draggable:true,
-      resizable:{
+      draggable: true,
+      resizable: {
         beforeStart: true,
         afterEnd: true
       },
@@ -240,7 +245,7 @@ export class EventCalendarComponent implements AfterViewInit {
     dialogConfig.minHeight = 400;
     dialogConfig.minWidth = 400;
     dialogConfig.autoFocus = "#title";
-    const dialogRef = this.eventDialog.open(EventDetailsDialogComponent, dialogConfig);
+    const dialogRef = this.dialog.open(EventDetailsDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(data => {
       if (!data) return;
 
@@ -256,12 +261,10 @@ export class EventCalendarComponent implements AfterViewInit {
         this.refresh.next();
         this.eventsAreSaved = false;
       }
-      
+
     })
 
   }
-
-
 
   private scrollToView() {
     if (this.view === CalendarView.Week || CalendarView.Day) {
@@ -274,16 +277,34 @@ export class EventCalendarComponent implements AfterViewInit {
           startOfHour(hourStart),
           startOfDay(this.minDate)
         )
-        if(this.scrollContainer) {
+        if (this.scrollContainer) {
           this.scrollContainer.nativeElement.scrollTop = (minutesSinceStartOfDay - 30);
         }
       }
     }
   }
 
-  google(): void {
-    this.googleService.authorize()
+  setExternalCalendars() {
+    const org = true
+    this.apiService.getExternalCalendars(org).subscribe(calendars => {
+      const account = calendars.find((cal:googleCalendarListItem) => cal.primary == true).id;
+      const googleAccounts = {...this.googleAccounts};
+      googleAccounts[account] = calendars;
+      this.googleAccounts = googleAccounts;
+      console.log(this.googleAccounts)
+    });
+    
   }
+
+  addGoogleAccount() {
+    if (!this.listeningForMessage) {
+      window.addEventListener('message', () => this.setExternalCalendars())
+      this.listeningForMessage = true;
+    }
+    const popupFeatures = 'toolbar=no, menubar=no, width=600, height=700, top=100, left=100';
+    const popup = window.open(this.googleAuthUrl, 'googleAuth', popupFeatures);
+  }
+
 
   getEvents(): void {
     const now = new Date();
@@ -320,20 +341,19 @@ export class EventCalendarComponent implements AfterViewInit {
     });
   }
 
-  handleCalendarUpdateSubmit () {
-    if (this.calendar){
-      const { title, startDate, endDate, startTime, endTime }  = this.updateCalendarForm.value;
-      console.log(title, startDate, endDate, startTime, endTime)
+  handleCalendarUpdateSubmit() {
+    if (this.calendar) {
+      const { title, startDate, endDate, startTime, endTime } = this.updateCalendarForm.value;
       const updateCalendarData: updateCalendarDTO = {
         id: this.id,
-        title : title,
+        title: title,
         start: startDate,
-        end : endDate,
+        end: endDate,
         minHour: startTime,
         maxHour: endTime
-      } 
-      
-      this.apiService.updateCalendar(updateCalendarData).subscribe( res => {
+      }
+
+      this.apiService.updateCalendar(updateCalendarData).subscribe(res => {
         if (res.ok) {
           let storedCalendars = localStorage.getItem('calendars');
           if (storedCalendars) {
@@ -341,23 +361,23 @@ export class EventCalendarComponent implements AfterViewInit {
             let updatedCalendars = calendars.filter((cal: calendarRO) => cal.id !== res.calendar.id)
 
             localStorage.setItem('calendars', JSON.stringify([
-              ...updatedCalendars, 
+              ...updatedCalendars,
               {
-                id: res.calendar.id, 
-                title:res.calendar.title, 
+                id: res.calendar.id,
+                title: res.calendar.title,
                 start: res.calendar.start,
                 end: res.calendar.end,
               }
             ]))
           }
-          
+
           this.minDate = new Date(res.calendar.start);
           this.viewDate = this.minDate;
           this.maxDate = new Date(res.calendar.end);
           this.minDate = this.viewDate;
           this.maxDate = new Date(Date.parse(res.calendar.end));
-          this.maxDate.setHours(23,59,59,59);
-          const[minHour,minMinutes] = res.calendar.minHour.split(":")
+          this.maxDate.setHours(23, 59, 59, 59);
+          const [minHour, minMinutes] = res.calendar.minHour.split(":")
           const [maxHour, maxMinutes] = res.calendar.maxHour.split(":")
           this.minHour = new Date(0);
           this.minHour.setHours(parseInt(minHour), parseInt(minMinutes))
@@ -368,19 +388,19 @@ export class EventCalendarComponent implements AfterViewInit {
           this.defaultDuration = res.calendar.defaultDuration;
           this.defaultLocation = res.calendar.defaultLocation;
           this.defaultTitle = res.calendar.defaultTitle;
-          this.events = res.calendar.events.map((ev: EventRO)=> {
-            const event : CalendarEvent= {
-              id:ev.id,
+          this.events = res.calendar.events.map((ev: EventRO) => {
+            const event: CalendarEvent = {
+              id: ev.id,
               title: ev.title,
               start: new Date(Date.parse(ev.start)),
               end: new Date(Date.parse(ev.end)),
               meta: JSON.parse(ev.meta),
-            
+
             }
             if (!ev.provider && !ev.client) {
               event.draggable = true;
               event.resizable = {
-                beforeStart:true,
+                beforeStart: true,
                 afterEnd: true
               }
             }
@@ -390,12 +410,12 @@ export class EventCalendarComponent implements AfterViewInit {
 
           this.refresh.next();
           this.scrollToView();
-          
+
         } else {
           //handle error ?
           console.log(res)
         }
-  
+
       })
     }
   }
@@ -408,7 +428,7 @@ export class EventCalendarComponent implements AfterViewInit {
       defaultTitle: this.eventConfigForm.value.title,
       id: this.id,
     }
-    
+
 
     this.apiService.updateCalendar(updateCalendarData).subscribe(res => {
       if (res.ok) {
@@ -423,8 +443,8 @@ export class EventCalendarComponent implements AfterViewInit {
 
 
   handleEventUpdateSubmit() {
-    
-    if (this.id !== ''){ 
+
+    if (this.id !== '') {
 
       const events = this.events
         .filter(ev => !ev.meta.syncedEvent && ev.id)
@@ -436,7 +456,7 @@ export class EventCalendarComponent implements AfterViewInit {
             id: ev.id ? ev.id : '',
             title: ev.title,
             start: ev.start.toISOString(),
-            end: ev.end.toISOString(), 
+            end: ev.end.toISOString(),
             meta: JSON.stringify(ev.meta),
             calendar: this.id
           }
@@ -448,11 +468,11 @@ export class EventCalendarComponent implements AfterViewInit {
         defaultTitle: this.eventConfigForm.value.title,
         id: this.id,
         events: events
-        
+
       }
 
       console.log(updateCalendarData)
-  
+
       this.apiService.updateCalendar(updateCalendarData).subscribe(res => {
         if (res.ok) {
           this.eventsAreSaved = true;
@@ -465,7 +485,7 @@ export class EventCalendarComponent implements AfterViewInit {
     }
 
   }
-  
+
   handleDurationChange() {
     this.defaultDuration = this.eventConfigForm.controls['duration'].value;
   }

@@ -21,8 +21,12 @@ export class ApiService {
     ) { }
 
   getCalendar (id:string | number) : Observable<calendarRO> {
+    const userToken = localStorage.getItem('userToken');
     const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json'}),
+      headers: new HttpHeaders({ 
+        'Content-Type': 'application/json', 
+        'Authorization': `Bearer ${userToken}`
+    }),
       withCredentials: true
     }
     
@@ -45,11 +49,15 @@ export class ApiService {
   }
 
   createCalendar(CalendarData: createCalendarDTO) : Observable<any> {
-    // const data = JSON.stringify(CalendarData);
+    const userToken = localStorage.getItem('userToken');
     const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json'}),
+      headers: new HttpHeaders({ 
+        'Content-Type': 'application/json', 
+        'Authorization': `Bearer ${userToken}`
+    }),
       withCredentials: true
     }
+    
     return this.http.post<any>(this.BASE_URL + '/calendar', CalendarData, httpOptions)
     .pipe(
       catchError(err => {
@@ -73,8 +81,12 @@ export class ApiService {
   }
 
   updateCalendar(calendarData: updateCalendarDTO): Observable<any> {
+    const userToken = localStorage.getItem('userToken');
     const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json'}),
+      headers: new HttpHeaders({ 
+        'Content-Type': 'application/json', 
+        'Authorization': `Bearer ${userToken}`
+    }),
       withCredentials: true
     }
     return this.http.post<any>(`${this.BASE_URL}/calendar/${calendarData.id}`, calendarData, httpOptions )
@@ -95,20 +107,38 @@ export class ApiService {
         return data;
       }) 
     )
-    
-    
+  }
+
+  getGoogleOAuthUrl (org=false) {
+    const userToken = localStorage.getItem('userToken');
+    const httpOptions = {
+      headers: new HttpHeaders({ 
+        'Content-Type': 'application/json', 
+        'Authorization': `Bearer ${userToken}`
+    }),
+      withCredentials: true
+    }
+
+    return this.http.get<any>(`${this.BASE_URL}/google/auth/url?org=${org}`, httpOptions)
+    .pipe(
+      map(data => { 
+        return data.url ? data.url : ''
+      })
+    )
+  }
+
+  getExternalCalendars(org=false) {
+    const userToken = localStorage.getItem('userToken');
+    const httpOptions = {
+      headers: new HttpHeaders({ 
+        'Content-Type': 'application/json', 
+        'Authorization': `Bearer ${userToken}`
+    }),
+      withCredentials: true
+    }
+
+    return this.http.get<any>(`${this.BASE_URL}/google/calendars?org=${org}`, httpOptions);
   }
 
 
-}
-
-
-
-
-interface CalendarData {
-  minDate?: Date;
-  maxDate?: Date;
-  minHour?: number;
-  maxHour?: number;
-  events: CalendarEvent[];
 }

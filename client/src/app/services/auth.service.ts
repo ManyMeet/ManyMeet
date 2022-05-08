@@ -32,7 +32,16 @@ export class AuthService {
           return of(data)
         }),
         map((data) => {
-          if (data.ok === undefined) data.ok = true;
+          if (data.ok === undefined) {
+            localStorage.setItem('userToken', data.token);
+            const user = {
+              ok: true, 
+              email: data.email,
+              id: data.id,
+              calendars: data.calendars,
+            }
+            return user;
+          }
           return data;
         })
       )
@@ -57,7 +66,16 @@ export class AuthService {
         return of(data)
       }),
       map((data)=> {
-        if (data.ok === undefined) data.ok = true;
+        if (data.ok === undefined) {
+          localStorage.setItem('userToken', data.token);
+          const user = {
+            ok: true, 
+            email: data.email,
+            id: data.id,
+            calendars: data.calendars,
+          }
+          return user;
+        }
         return data;
       })
     )
@@ -65,9 +83,7 @@ export class AuthService {
   }
 
   logout () {
-    // implement logout routes on server side later. 
-    console.log('logging out');
-
+    localStorage.removeItem('userToken')
   }
 
 

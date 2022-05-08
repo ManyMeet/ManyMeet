@@ -1,7 +1,4 @@
-import { EntityRepository } from "@mikro-orm/postgresql";
-import { Calendar } from "./calendar.entity";
+import { EntityRepository } from '@mikro-orm/postgresql';
+import { Calendar } from './calendar.entity';
 
-
-export class CalendarRepository extends EntityRepository<Calendar> {
-
-}
+export class CalendarRepository extends EntityRepository<Calendar> {}

@@ -48,3 +48,9 @@ export interface updateCalendarDTO {
   participants?: participantRO[],
   users?: UserPreviewRO[]
 }
+
+export interface googleCalendarListItem {
+  id: string;
+  summary:string;
+  primary:boolean;
+}

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ca, el } from 'date-fns/locale';
-import { calendarPreview, createCalendarDTO } from 'src/app/interfaces/calendar.interface';
+import { calendarPreview, calendarRO, createCalendarDTO } from 'src/app/interfaces/calendar.interface';
 import { ErrorResponse } from 'src/app/interfaces/error.interface';
 import { UserRO } from 'src/app/interfaces/user.interface';
 import { ApiService } from 'src/app/services/api.service';

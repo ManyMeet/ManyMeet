@@ -9,10 +9,7 @@ import { UpdateParticipantDto } from './dto/update-participant-dto';
 
 @Controller('calendar')
 export class CalendarController {
-  constructor (
-    private readonly calendarService: CalendarService,
-  ) {}
-
+  constructor(private readonly calendarService: CalendarService) {}
 
   /*******************
    * Calendar routes *
@@ -20,26 +17,29 @@ export class CalendarController {
 
   @Post()
   async createCalendar(
-    @ReqUser() user: User, 
-    @Body() calendarData: CreateCalendarDto
+    @ReqUser() user: User,
+    @Body() calendarData: CreateCalendarDto,
   ) {
     const data = await this.calendarService.create(calendarData, user);
     return data.calendar;
   }
 
   @Get(':calendarId')
-  async getCalendar (@Param('calendarId') id) {
-    return this.calendarService.find(id)
+  async getCalendar(@Param('calendarId') id:string) {
+    return this.calendarService.find(id);
   }
 
   @Delete(':calendarId')
-  async deleteCalendar (@Param('calendarId') id) {
-    return this.calendarService.delete(id)
+  async deleteCalendar(@Param('calendarId') id:string) {
+    return this.calendarService.delete(id);
   }
 
   @Post(':calendarId')
-  async updateCalendar(@Param('calendarId') id, @Body() calendarData: UpdateCalendarDto) {
-    return this.calendarService.update(id, calendarData)
+  async updateCalendar(
+    @Param('calendarId') id:string,
+    @Body() calendarData: UpdateCalendarDto,
+  ) {
+    return this.calendarService.update(id, calendarData);
   }
 
   /****************
@@ -47,51 +47,63 @@ export class CalendarController {
    ****************/
 
   @Get(':calendarId/events')
-  async getEvents(@Param('calendarId') id) {
-    return this.calendarService.getEvents(id)
+  async getEvents(@Param('calendarId') id:string) {
+    return this.calendarService.getEvents(id);
   }
 
   @Get(':calendarId/events/:eventId')
-  async getEvent(@Param() params) {
-    return this.calendarService.getEvent(params.calendarId, params.eventId)
-  } 
+  async getEvent(@Param() params: {[key:string]:string}) {
+    const { calendarId, eventId } = params;
+    return this.calendarService.getEvent(calendarId, eventId);
+  }
 
   @Post(':calendarId/events/:eventId')
-  async updateEvent(@Param() params, @Body() eventData: UpdateEventDto) {
-    return this.calendarService.updateEvent(params.calendarId, params.eventId, eventData)
+  async updateEvent(@Param() params: {[key:string]:string}, @Body() eventData: UpdateEventDto) {
+    const { calendarId, eventId } = params;
+    return this.calendarService.updateEvent(
+      calendarId,
+      eventId,
+      eventData,
+    );
   }
 
   @Delete(':calendarId/events/:eventId')
-  async deleteEvent(@Param() params) {
-    return this.calendarService.deleteEvent(params.calendarId, params.eventId)
+  async deleteEvent(@Param() params: {[key:string]:string}) {
+    const { calendarId, eventId } = params;
+    return this.calendarService.deleteEvent(calendarId, eventId);
   }
-
 
   /**********************
    * Participant routes *
    **********************/
 
   @Get(':calendarId/participants')
-  async getParticipants(@Param('calendarId') id) {
+  async getParticipants(@Param('calendarId') id:string) {
     return this.calendarService.getParticipants(id);
   }
 
   @Get(':calendarId/participants/:participantId')
-  async getParticipant(@Param() params) {
-    const {calendarId, participantId} = params;
+  async getParticipant(@Param() params: {[key:string]:string}) {
+    const { calendarId, participantId } = params;
     return this.calendarService.getParticipant(calendarId, participantId);
   }
 
   @Delete(':calendarId/participants/:participantId')
-  async deleteParticipant(@Param() params) {
-    const {calendarId, participantId} = params;
+  async deleteParticipant(@Param() params: {[key:string]:string}) {
+    const { calendarId, participantId } = params;
     return this.calendarService.deleteParticipant(calendarId, participantId);
   }
 
   @Post(':calendarId/participants/:participantId')
-  async updateParticipant(@Param() params, @Body() participantData: UpdateParticipantDto) {
-    const {calendarId, participantId} = params;
-    return this.calendarService.updateParticipant(calendarId, participantId, participantData);
+  async updateParticipant(
+    @Param() params: {[key:string]:string},
+    @Body() participantData: UpdateParticipantDto,
+  ) {
+    const { calendarId, participantId } = params;
+    return this.calendarService.updateParticipant(
+      calendarId,
+      participantId,
+      participantData,
+    );
   }
-
 }

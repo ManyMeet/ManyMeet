@@ -1,11 +1,11 @@
-import { SqlHighlighter} from '@mikro-orm/sql-highlighter';
+import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 import { MikroOrmModuleOptions as Options } from '@mikro-orm/nestjs';
 import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
-import {LoadStrategy} from '@mikro-orm/core'
+import { LoadStrategy } from '@mikro-orm/core';
 
-require('dotenv').config()
+require('dotenv').config();
 
-const config: Options =  {
+const config: Options = {
   entities: ['dist/**/*.entity.js'],
   entitiesTs: ['src/**/*.entity.ts'],
   clientUrl: process.env.DATABASE_URL,
@@ -15,9 +15,9 @@ const config: Options =  {
   loadStrategy: LoadStrategy.JOINED,
   metadataProvider: TsMorphMetadataProvider,
   migrations: {
+    pathTs: 'src/migrations',
     path: 'dist/migrations',
-    pathTs:'src/migrations'
-  }
-}
+  },
+};
 
-export default config
+export default config;

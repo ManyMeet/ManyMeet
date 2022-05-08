@@ -13,6 +13,7 @@ const routes: Routes = [
   {path:'', component: LoginComponent},
   {path:'old', component: HomeComponent},
   {path:'auth/google', component: GoogleAuthComponent },
+  {path:'auth/google/participants', component: GoogleAuthComponent },
   {path:'auth/register', component:RegisterComponent},
   {path:'auth/login', component:LoginComponent},
   {path:'dashboard', component:DashboardComponent},

@@ -63,7 +63,6 @@ export class LoginComponent implements OnInit {
     const password = this.form.controls['password'].value;
     this.authService.login(email, password).subscribe(data => {
       if (!data.ok) {
-
         this.errors.email = data.errors['general'];
         this.errors.password = data.errors['general']
         this.form.controls['email'].setErrors({invalid: true})

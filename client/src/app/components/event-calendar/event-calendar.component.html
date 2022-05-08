@@ -123,18 +123,15 @@
       </form>
     </mat-expansion-panel>
     
-    <mat-expansion-panel [expanded]="false" class="expansion-panel">
+    <mat-expansion-panel [expanded]="true" class="expansion-panel">
       <mat-expansion-panel-header>
         <mat-panel-title>
-         Sync Calendars
+         External Calendars
         </mat-panel-title>
       </mat-expansion-panel-header>
 
       <div class="inner-container">
-        <button mat-raised-button color="primary" *ngIf="!authorized" class="sign-in" (click)="google()">Sign in with
-          Google</button>
-        <button mat-raised-button color="primary" *ngIf="authorized" class="sign-in" (click)="getEvents()">Get
-          Events</button>
+        <button mat-raised-button color="primary" class="sign-in" (click)="addGoogleAccount()">Add a Google Calendar</button>
       </div>
     </mat-expansion-panel>
 
