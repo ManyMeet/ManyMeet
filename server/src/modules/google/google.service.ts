@@ -134,7 +134,8 @@ export class GoogleService {
         return {
           id: cal.id,
           summary: cal.summary,
-          primary: cal.primary ? true : false
+          primary: cal.primary ? true : false,
+          color: cal.backgroundColor
         }
       })
       

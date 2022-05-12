@@ -132,6 +132,15 @@
 
       <div class="inner-container">
         <button mat-raised-button color="primary" class="sign-in" (click)="addGoogleAccount()">Add a Google Calendar</button>
+        <div *ngIf="this.googleAccounts">
+          <div *ngFor="let account of Object.keys(this.googleAccounts)">
+            <h2>{{account}}</h2>
+            <div
+              *ngFor="let cal of Object.values(this.googleAccounts[account])" 
+              class="example-margin">
+              <button mat-icon-button [ngStyle]="calColor(cal)"><mat-icon>check_box_outline_blank</mat-icon></button> {{cal.summary}}</div>
+          </div>
+        </div>
       </div>
     </mat-expansion-panel>
 

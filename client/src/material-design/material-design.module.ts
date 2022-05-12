@@ -16,14 +16,15 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatDividerModule } from '@angular/material/divider';
-  
+import { MatCheckboxModule} from '@angular/material/checkbox'
+
 const modules: any = [
   MatButtonModule, MatIconModule, MatDialogModule,
   MatFormFieldModule, MatInputModule, MatCardModule,
   MatStepperModule, MatNativeDateModule, MatSidenavModule,
   MatToolbarModule, MatMenuModule, MatDatepickerModule, 
   MatExpansionModule, MatBadgeModule, MatSelectModule,
-  MatTableModule, MatDividerModule,
+  MatTableModule, MatDividerModule, MatCheckboxModule
 ]
 
 

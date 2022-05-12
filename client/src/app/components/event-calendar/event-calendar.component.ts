@@ -31,6 +31,15 @@ export class EventCalendarComponent implements AfterViewInit {
 
   @ViewChild('scrollContainer') scrollContainer?: ElementRef<HTMLElement>;
 
+  Object = Object;
+  calColor = (cal:googleCalendarListItem) => {
+    return {
+      "color": cal.color,
+      "background-color":"yellow"
+    }
+  }
+
+
   opened: boolean = true;
   viewDate: Date = new Date();
   minDate?: Date;
@@ -287,9 +296,9 @@ export class EventCalendarComponent implements AfterViewInit {
   setExternalCalendars() {
     const org = true
     this.apiService.getExternalCalendars(org).subscribe(calendars => {
-      const account = calendars.find((cal:googleCalendarListItem) => cal.primary == true).id;
+      const accountEmail = calendars.find((cal:googleCalendarListItem) => cal.primary == true).id;
       const googleAccounts = {...this.googleAccounts};
-      googleAccounts[account] = calendars;
+      googleAccounts[accountEmail] = calendars;
       this.googleAccounts = googleAccounts;
       console.log(this.googleAccounts)
     });
@@ -302,7 +311,7 @@ export class EventCalendarComponent implements AfterViewInit {
       this.listeningForMessage = true;
     }
     const popupFeatures = 'toolbar=no, menubar=no, width=600, height=700, top=100, left=100';
-    const popup = window.open(this.googleAuthUrl, 'googleAuth', popupFeatures);
+    window.open(this.googleAuthUrl, 'googleAuth', popupFeatures);
   }
 
 

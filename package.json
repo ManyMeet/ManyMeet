@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "private": false,
   "scripts": {
+    "start:server": "cd server && npm run start:dev",
+    "start:client" : "cd client && ng serve"
   },
   "repository": {
     "type": "git",

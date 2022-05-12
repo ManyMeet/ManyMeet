@@ -53,4 +53,6 @@ export interface googleCalendarListItem {
   id: string;
   summary:string;
   primary:boolean;
+  color:string;
+  active?:boolean
 }
