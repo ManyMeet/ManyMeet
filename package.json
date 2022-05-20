@@ -3,19 +3,20 @@
   "version": "1.0.0",
   "private": false,
   "scripts": {
+    "install": "cd server && npm install && cd ../client && npm install",
     "start:server": "cd server && npm run start:dev",
     "start:client" : "cd client && ng serve"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Roznoshchik/manymeet.git"
+    "url": "git+https://github.com/ManyMeet/manymeet.git"
   },
   "keywords": [],
   "author": "Rostislav Roznoshchik",
   "license": "Unlicensed",
   "bugs": {
-    "url": "https://github.com/Roznoshchik/manymeet/issues"
+    "url": "https://github.com/ManyMeet/manymeet/issues"
   },
-  "homepage": "https://github.com/Roznoshchik/manymeet#readme",
+  "homepage": "https://github.com/ManyMeet/manymeet#readme",
   "description": ""
 }
