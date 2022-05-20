@@ -13,8 +13,7 @@ Check out the [video](https://www.youtube.com/watch?v=FFEztDTd5Ls) for a brief o
 ![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)  
 
 ## Integrations
-<img src="https://img.shields.io/badge/google-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="google"/>
-<img src="./server/assets/sendgrid.png" height="30px"/>  
+<img src="https://img.shields.io/badge/google-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="google"/> <img src="./server/assets/sendgrid.png" height="30px"/>  
   
 #
 ## Getting Started
